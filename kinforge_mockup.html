@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinForge Chronicles | Screen-Free Family Adventures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #F8F3E2;
+        }
+
+        /* Color Palette Variables */
+        :root {
+            --periwinkle: #6F8AB7;
+            --coral: #F79F8E;
+            --mint: #9BCEA0;
+            --cream: #F8F3E2;
+            --gold: #F0D28A;
+        }
+
+        /* Pre-Header Bar */
+        .pre-header {
+            background: var(--periwinkle);
+            color: var(--cream);
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pre-header-left {
+            flex: 1;
+        }
+
+        .pre-header-cta {
+            background: var(--coral);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .pre-header-cta:hover {
+            background: #e88d7d;
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--cream);
+            padding: 80px 20px;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text {
+            padding-right: 20px;
+        }
+
+        .eyebrow {
+            color: var(--gold);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            color: var(--periwinkle);
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero h2 {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .social-proof {
+            margin: 25px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .stars {
+            color: var(--gold);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .testimonial-snippet {
+            font-style: italic;
+            color: #666;
+            font-size: 15px;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: var(--coral);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(247, 159, 142, 0.3);
+        }
+
+        .cta-primary:hover {
+            background: #e88d7d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(247, 159, 142, 0.4);
+        }
+
+        .cta-secondary {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .trust-badges {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .badge::before {
+            content: "✓";
+            color: var(--mint);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .hero-image {
+            background: linear-gradient(135deg, var(--periwinkle) 0%, var(--mint) 100%);
+            border-radius: 15px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Problem Section */
+        .problem-section {
+            background: white;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            color: var(--periwinkle);
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        .pain-points {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .pain-point {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--cream);
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .pain-point:hover {
+            transform: translateY(-5px);
+        }
+
+        .pain-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .pain-point h3 {
+            font-size: 18px;
+            color: var(--periwinkle);
+            margin-bottom: 10px;
+        }
+
+        .pain-point p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .transition-text {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--periwinkle);
+            margin-top: 40px;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: linear-gradient(to bottom, rgba(155, 206, 160, 0.1), rgba(155, 206, 160, 0.05));
+            padding: 80px 20px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .step-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            color: var(--periwinkle);
+            margin-bottom: 15px;
+        }
+
+        .step p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .callout-box {
+            background: white;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        .callout-box p {
+            font-size: 16px;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background: var(--cream);
+            padding: 80px 20px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .benefit {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .benefit-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .benefit h3 {
+            font-size: 22px;
+            color: var(--periwinkle);
+            margin-bottom: 15px;
+        }
+
+        .benefit-quote {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .benefit-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefit-list li {
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .benefit-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--mint);
+            font-weight: bold;
+        }
+
+        /* Deeper Value Section */
+        .deeper-value {
+            background: linear-gradient(to bottom, rgba(111, 138, 183, 0.08), rgba(111, 138, 183, 0.03));
+            padding: 80px 20px;
+        }
+
+        .value-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+
+        .value-column h3 {
+            color: var(--periwinkle);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .value-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .value-list li {
+            padding: 12px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .value-list li::before {
+            content: "✓ ";
+            color: var(--mint);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .negative-list li::before {
+            content: "❌ ";
+        }
+
+        .pullquote {
+            background: white;
+            border-left: 4px solid var(--coral);
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 900px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .pullquote p {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #333;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .pullquote cite {
+            font-style: normal;
+            color: var(--periwinkle);
+            font-weight: 600;
+        }
+
+        /* Perfect For Section */
+        .perfect-for {
+            background: white;
+            padding: 80px 20px;
+        }
+
+        .checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 60px;
+            max-width: 900px;
+            margin: 0 auto 40px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .checklist-item::before {
+            content: "✓";
+            color: var(--mint);
+            font-weight: bold;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .cta-box {
+            text-align: center;
+            background: var(--cream);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-box h3 {
+            font-size: 24px;
+            color: var(--periwinkle);
+            margin-bottom: 15px;
+        }
+
+        .cta-box p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--cream);
+            padding: 80px 20px;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .testimonial-card .stars {
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .testimonial-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--periwinkle);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-meta {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .mini-testimonials {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .mini-testimonial {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Challenge Section */
+        .challenge-section {
+            background: linear-gradient(135deg, var(--periwinkle) 0%, rgba(111, 138, 183, 0.8) 100%);
+            color: white;
+            padding: 80px 20px;
+        }
+
+        .challenge-section .section-title {
+            color: white;
+        }
+
+        .challenge-section h3 {
+            color: var(--cream);
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+
+        .challenge-days {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .challenge-day {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .challenge-day h4 {
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .challenge-day p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .value-statement {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .value-statement p {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .value-statement .strike {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: white;
+            padding: 80px 20px;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .faq-item {
+            margin-bottom: 30px;
+        }
+
+        .faq-item h4 {
+            color: var(--periwinkle);
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .faq-item p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* Comparison Chart */
+        .comparison {
+            background: var(--cream);
+            padding: 80px 20px;
+        }
+
+        .comparison-table {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: var(--periwinkle);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: rgba(111, 138, 183, 0.03);
+        }
+
+        .check {
+            color: var(--mint);
+            font-weight: bold;
+        }
+
+        .x-mark {
+            color: #ccc;
+        }
+
+        /* Final CTA Section */
+        .final-cta {
+            background: linear-gradient(135deg, rgba(111, 138, 183, 0.9) 0%, var(--periwinkle) 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .final-cta p {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+        }
+
+        .cta-highlight {
+            background: white;
+            color: var(--periwinkle);
+            padding: 50px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .guarantee-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: #333;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .urgency {
+            margin-top: 30px;
+            font-size: 16px;
+            color: var(--gold);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--periwinkle);
+            color: var(--cream);
+            padding: 50px 20px 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 30px;
+        }
+
+        .footer-section h4 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--cream);
+            font-size: 14px;
+            text-decoration: none;
+            line-height: 2;
+            opacity: 0.9;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(248, 243, 226, 0.2);
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content,
+            .value-content,
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pain-points,
+            .steps,
+            .benefits-grid,
+            .testimonial-grid,
+            .challenge-days,
+            .mini-testimonials {
+                grid-template-columns: 1fr;
+            }
+
+            .checklist {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .pre-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pre-Header Bar -->
+    <div class="pre-header">
+        <div class="pre-header-left">
+            ⭐ Trusted by 500+ families • Ages 4-12 • Zero prep required
+        </div>
+        <a href="#challenge" class="pre-header-cta">Start Free Challenge →</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="eyebrow">SCREEN-FREE FAMILY ADVENTURES</div>
+                    <h1>Screen-Free Adventures That Build Character—Literally and Figuratively</h1>
+                    <h2>Zero-prep family quests where your kids make meaningful choices and discover their creativity—while you guide the journey with confidence.</h2>
+                    
+                    <div class="social-proof">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-snippet">"My kids asked to turn off the TV" — Sarah M., Mom of 2</p>
+                    </div>
+
+                    <a href="#challenge" class="cta-primary">Start Your Free 5-Day Challenge</a>
+                    <p class="cta-secondary">No credit card required • Get your first adventure in 5 minutes</p>
+
+                    <div class="trust-badges">
+                        <div class="badge">500+ Families</div>
+                        <div class="badge">30-45 Minutes</div>
+                        <div class="badge">Ages 4-12</div>
+                        <div class="badge">Zero Prep</div>
+                    </div>
+                </div>
+
+                <div class="hero-image">
+                    [Hero Image]<br>
+                    Parent & children around table<br>
+                    Engaged in adventure<br>
+                    Warm, inviting scene
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section">
+        <div class="container">
+            <h2 class="section-title">Sound Familiar?</h2>
+            
+            <div class="pain-points">
+                <div class="pain-point">
+                    <div class="pain-icon">📱</div>
+                    <h3>Screen Time Battles</h3>
+                    <p>Every evening ends with "just 5 more minutes" negotiations</p>
+                </div>
+                <div class="pain-point">
+                    <div class="pain-icon">😔</div>
+                    <h3>Quality Time Guilt</h3>
+                    <p>You want meaningful moments but don't know how to create them</p>
+                </div>
+                <div class="pain-point">
+                    <div class="pain-icon">🎨</div>
+                    <h3>"I'm Not Creative"</h3>
+                    <p>You feel pressure to be entertaining but don't have the ideas</p>
+                </div>
+                <div class="pain-point">
+                    <div class="pain-icon">⏰</div>
+                    <h3>Time Slipping Away</h3>
+                    <p>Your kids are growing fast and you're missing the moments that matter</p>
+                </div>
+            </div>
+
+            <p class="transition-text">There's a better way to spend your evenings together.</p>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works (It's Easier Than You Think)</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">📖</div>
+                    <h3>Open & Read</h3>
+                    <p>Just read the story prompts—we wrote everything for you. No memorizing rules. No creative pressure.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">🎯</div>
+                    <h3>Kids Choose</h3>
+                    <p>They decide what the hero does. Choices have real consequences. Their decisions reveal who they are.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">💬</div>
+                    <h3>You Guide</h3>
+                    <p>Ask "Why did you choose that?" after each decision. These become teaching moments—no lectures.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">✨</div>
+                    <h3>Magic Happens</h3>
+                    <p>Watch creativity, confidence, and character unfold. These are the moments they'll remember.</p>
+                </div>
+            </div>
+
+            <div class="callout-box">
+                <p>⏱️ Just 30-45 minutes • 🏠 Uses household items • 👨‍👩‍👧‍👦 Perfect for 1-3 kids • 📅 Play anytime</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#challenge" class="cta-primary">Get Your First Free Adventure</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">What Your Family Gains</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <div class="benefit-icon">🎭</div>
+                    <h3>Confident Parents</h3>
+                    <p class="benefit-quote">"Just read the script—we handle the creativity. You become the guide your kids need, even if you've never told a story before."</p>
+                    <ul class="benefit-list">
+                        <li>No more anxiety about "what do we do tonight?"</li>
+                        <li>Clear structure gives you confidence</li>
+                        <li>Kids see you as the hero-maker</li>
+                    </ul>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">🧠</div>
+                    <h3>Kids Who Think</h3>
+                    <p class="benefit-quote">"Every choice reveals character. Watch your child's creativity and problem-solving come alive through meaningful decisions."</p>
+                    <ul class="benefit-list">
+                        <li>They learn consequences matter</li>
+                        <li>Creativity flourishes when they have agency</li>
+                        <li>Problem-solving becomes natural</li>
+                    </ul>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">❤️</div>
+                    <h3>Moments That Last</h3>
+                    <p class="benefit-quote">"These aren't just games—they're the stories your family will reference for years. 'Remember when you chose to help the dragon?'"</p>
+                    <ul class="benefit-list">
+                        <li>Inside jokes that bond your family</li>
+                        <li>Shared adventures you all remember</li>
+                        <li>Real connection, not passive consumption</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deeper Value -->
+    <section class="deeper-value">
+        <div class="container">
+            <h2 class="section-title">This Isn't Just Entertainment—<br>It's Character Formation in Disguise</h2>
+            
+            <div class="value-content">
+                <div class="value-column">
+                    <h3>Most family activities are either:</h3>
+                    <ul class="value-list negative-list">
+                        <li>Passive entertainment (screens, movies)</li>
+                        <li>Competitive games (someone wins, someone loses)</li>
+                        <li>Educational but boring (kids resist)</li>
+                    </ul>
+                    <p style="margin-top: 30px; font-weight: 600; color: var(--periwinkle);">KinForge is different.</p>
+                </div>
+
+                <div class="value-column">
+                    <h3>Your kids are learning:</h3>
+                    <ul class="value-list">
+                        <li>Courage when facing hard choices</li>
+                        <li>Compassion when helping others</li>
+                        <li>Wisdom when consequences unfold</li>
+                        <li>Identity through self-discovery</li>
+                    </ul>
+                    <p style="margin-top: 30px; font-style: italic; color: #666;">And you're learning to guide—not lecture—these character-building moments.</p>
+                </div>
+            </div>
+
+            <div class="pullquote">
+                <p>"My 7-year-old chose kindness over treasure, then explained why heroes don't need rewards. I realized she's becoming exactly who she should be."</p>
+                <cite>— Jennifer T., Mom of 3</cite>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perfect For -->
+    <section class="perfect-for">
+        <div class="container">
+            <h2 class="section-title">Is This For Your Family?</h2>
+            
+            <div class="checklist">
+                <div class="checklist-item">Parents tired of screen time battles</div>
+                <div class="checklist-item">Families who value character development</div>
+                <div class="checklist-item">Families wanting deeper connection</div>
+                <div class="checklist-item">Parents who prefer guiding over lecturing</div>
+                <div class="checklist-item">Kids ages 4-12 who love making choices</div>
+                <div class="checklist-item">Kids who get bored with passive entertainment</div>
+                <div class="checklist-item">Parents who "aren't creative" but want to guide</div>
+                <div class="checklist-item">Busy families needing zero-prep activities</div>
+                <div class="checklist-item">Homeschoolers seeking character curriculum</div>
+                <div class="checklist-item">Parents building family traditions</div>
+                <div class="checklist-item">Anyone wanting intentional family time</div>
+                <div class="checklist-item">Anyone wanting kids to think for themselves</div>
+            </div>
+
+            <div class="cta-box">
+                <h3>Not sure if this is for you?</h3>
+                <p>Take the free 5-day challenge and find out—no commitment required.</p>
+                <a href="#challenge" class="cta-primary">Start Your Free Challenge</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Parents Are Saying</h2>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"We went from iPad battles every night to my kids asking 'Can we do another adventure?' I'm watching my son become braver with every choice he makes."</p>
+                    <div class="testimonial-author">— Michael R.</div>
+                    <div class="testimonial-meta">Dad of 2 (Ages 6 & 9) • After 2 weeks</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"I'm not a creative person at all. I was nervous I'd mess it up. But the script made it so easy—and my daughter's responses blew me away. She's so thoughtful."</p>
+                    <div class="testimonial-author">— Sarah M.</div>
+                    <div class="testimonial-meta">Mom of 1 (Age 7) • After first adventure</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <p>"These adventures create the teaching moments I've been trying to manufacture for years. When he chose to free the trapped dragon, we had the deepest conversation about mercy and justice."</p>
+                    <div class="testimonial-author">— Priya K.</div>
+                    <div class="testimonial-meta">Mom of 3 (Ages 5, 8, 11) • After 1 month</div>
+                </div>
+            </div>
+
+            <div class="mini-testimonials">
+                <div class="mini-testimonial">"Finally, family time that isn't a screen" — David L.</div>
+                <div class="mini-testimonial">"My kids remember these adventures weeks later" — Amanda C.</div>
+                <div class="mini-testimonial">"Worth every penny—we do this every Sunday now" — The Martinez Family</div>
+                <div class="mini-testimonial">"I feel confident facilitating now" — Rebecca S.</div>
+                <div class="mini-testimonial">"Our homeschool routine just got better" — Tim & Jessica W.</div>
+                <div class="mini-testimonial">"They're learning empathy through story" — Nicole P.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenge Section -->
+    <section class="challenge-section" id="challenge">
+        <div class="container">
+            <h2 class="section-title">Try It Free: The 5-Day Family Connection Challenge</h2>
+            <h3>Discover what's possible when you trade screens for stories</h3>
+            
+            <div class="challenge-days">
+                <div class="challenge-day">
+                    <h4>✓ Day 1</h4>
+                    <p><strong>The Story Starter</strong><br>(10 minutes)<br><br>Discover your power as a guide</p>
+                </div>
+                <div class="challenge-day">
+                    <h4>✓ Day 2</h4>
+                    <p><strong>Character Creation</strong><br>(15 minutes)<br><br>How choices reveal who your kids are</p>
+                </div>
+                <div class="challenge-day">
+                    <h4>✓ Day 3</h4>
+                    <p><strong>Your First Adventure</strong><br>(30 minutes)<br><br>Guide a complete quest with confidence</p>
+                </div>
+                <div class="challenge-day">
+                    <h4>✓ Day 4</h4>
+                    <p><strong>Problem-Solving</strong><br>(20 minutes)<br><br>Watch creativity you didn't know they had</p>
+                </div>
+                <div class="challenge-day">
+                    <h4>✓ Day 5</h4>
+                    <p><strong>Building Your Legend</strong><br>(30 minutes)<br><br>Start your family's continuing story</p>
+                </div>
+            </div>
+
+            <div class="value-statement">
+                <p><span class="strike">$97 Value</span> • <strong>Yours Free</strong></p>
+                <p>No credit card required • Instant access</p>
+            </div>
+
+            <div class="cta-highlight">
+                <a href="#" class="cta-primary" style="font-size: 22px; padding: 20px 50px;">Start Your Free 5-Day Challenge</a>
+                <p style="margin-top: 20px; color: #666;">✓ No credit card required<br>✓ Instant access via email<br>✓ Cancel anytime (but you won't want to)</p>
+                <p class="urgency" style="color: var(--periwinkle);">⚡ Join the 347 families who started this week</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Common Questions</h2>
+            
+            <div class="faq-grid">
+                <div>
+                    <div class="faq-item">
+                        <h4>Q: "I'm not creative—can I really do this?"</h4>
+                        <p>A: That's exactly why we created this. You don't need creativity—just the ability to read and ask questions. The script handles everything. Parents with zero storytelling experience are succeeding.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q: "Will my kids actually stay engaged?"</h4>
+                        <p>A: When kids make real choices with real consequences? Absolutely. They're not passive—they're the hero. We've seen kids beg to continue even past bedtime.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q: "What ages work best?"</h4>
+                        <p>A: Ages 4-12, with difficulty options. Younger kids (4-6) focus on simple choices. Older kids (9-12) tackle moral complexity. Siblings of different ages play together beautifully.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q: "Do I need to learn complicated game rules?"</h4>
+                        <p>A: Not at all! Start simple: Read the story, kids choose actions, you narrate results. That's it. Takes 2 minutes to understand. Want more engagement? Add simple dice for surprise outcomes (totally optional). The baseline is pure storytelling—as simple as bedtime stories.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="faq-item">
+                        <h4>Q: "How long does each adventure take?"</h4>
+                        <p>A: 30-45 minutes. Perfect for after dinner, weekend mornings, or rainy days. You can pause and continue anytime—the story waits for you.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q: "Do I need special materials?"</h4>
+                        <p>A: Nope! Household items only (buttons for coins, flashlight for lantern, etc). Everything you need is already in your home.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q: "What if we don't like it?"</h4>
+                        <p>A: 100% money-back guarantee. If you don't have at least one meaningful moment with your kids, full refund—no questions asked. You have 30 days to decide.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q: "Is this like Dungeons & Dragons?"</h4>
+                        <p>A: Similar magic, zero complexity. No dice mechanics to learn, no character sheets to manage, no rules to memorize. Just story and choices. Think choose-your-own-adventure books, but interactive and around a table.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Chart -->
+    <section class="comparison">
+        <div class="container">
+            <h2 class="section-title">Why Choose KinForge?</h2>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Screen Time</th>
+                            <th>Board Games</th>
+                            <th style="background: var(--coral);">KinForge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Engagement</strong></td>
+                            <td>Passive</td>
+                            <td>Competitive</td>
+                            <td><strong>Collaborative</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Prep Time</strong></td>
+                            <td>None</td>
+                            <td>Setup required</td>
+                            <td><strong class="check">Zero ✓</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Character Dev</strong></td>
+                            <td class="x-mark">❌</td>
+                            <td>Limited</td>
+                            <td><strong class="check">✓✓✓</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parent Confidence</strong></td>
+                            <td>N/A</td>
+                            <td>Assumed</td>
+                            <td><strong class="check">Built-in ✓</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memorable Moments</strong></td>
+                            <td class="x-mark">❌</td>
+                            <td>Sometimes</td>
+                            <td><strong class="check">Always ✓</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Screen-Free</strong></td>
+                            <td class="x-mark">❌</td>
+                            <td class="check">✓</td>
+                            <td><strong class="check">✓</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ages 4-12</strong></td>
+                            <td>Limited</td>
+                            <td>Varies</td>
+                            <td><strong class="check">✓</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Builds Connection</strong></td>
+                            <td class="x-mark">❌</td>
+                            <td>Sometimes</td>
+                            <td><strong class="check">✓✓✓</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Your Family's Greatest Adventure<br>Starts Here</h2>
+            <p>Don't let another week slip by wondering where the time went.<br><br>In 5 minutes, you could start your family's first epic quest. Your child could make their first meaningful choice as a hero. You could see creativity in ways that surprise you.<br><br>The question isn't whether this will work. It's whether you'll give your family the chance to find out.</p>
+            
+            <a href="#challenge" class="cta-primary" style="font-size: 24px; padding: 22px 60px;">Start Your Free 5-Day Challenge</a>
+            
+            <div style="margin-top: 30px; font-size: 16px;">
+                <p>✓ No credit card required<br>✓ Instant access via email<br>✓ Cancel anytime (but you won't want to)</p>
+            </div>
+
+            <p class="urgency">⚡ Join the 347 families who started this week</p>
+            
+            <div class="guarantee-badge">30-Day Money-Back Guarantee • 100% Risk-Free</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>KinForge Chronicles™</h4>
+                    <p>Screen-free adventures that build character</p>
+                    <p style="margin-top: 15px;">© 2024 KinForge Chronicles<br>Created by a dad who deleted screen time</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <p>
+                        <a href="#how-it-works">How It Works</a><br>
+                        <a href="#challenge">Free Challenge</a><br>
+                        <a href="#testimonials">Reviews</a><br>
+                        <a href="#faq">FAQ</a><br>
+                        <a href="#contact">Contact</a>
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Get In Touch</h4>
+                    <p>
+                        Questions?<br>
+                        hello@kinforgechronicles.com<br><br>
+                        Follow Our Journey:<br>
+                        📷 Instagram<br>
+                        📘 Facebook<br>
+                        🎥 YouTube
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>Privacy Policy | Terms of Service | Refund Policy</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
