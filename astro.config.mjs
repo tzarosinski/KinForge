@@ -33,6 +33,8 @@ export default defineConfig({
       components: {
         // Custom Head for auth protection on grimoire pages
         Head: './src/components/starlight/Head.astro',
+        // Custom Header with Health Tracker for adventures
+        Header: './src/components/starlight/Header.astro',
       },
       // Disable default Starlight homepage to use custom landing page
       disable404Route: false,

@@ -1,0 +1,288 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/Header.astro';
+
+// Check if this is an adventure page (where we show the health tracker)
+const isAdventurePage = Astro.url.pathname.includes('/adventures/');
+---
+
+<style>
+  .health-tracker-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    margin-left: 0.5rem;
+  }
+  .health-tracker-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+    transform: scale(1.05);
+  }
+  .health-tracker-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .health-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background: #0B0F19;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.65rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .health-popup {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: rgba(17, 24, 39, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    min-width: 180px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    z-index: 100;
+    display: none;
+  }
+  .health-popup.open {
+    display: block;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .health-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .health-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1px solid;
+  }
+  .health-btn:active {
+    transform: scale(0.95);
+  }
+  .health-btn.minus {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+  }
+  .health-btn.minus:hover {
+    background: rgba(239, 68, 68, 0.5);
+  }
+  .health-btn.plus {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: rgba(34, 197, 94, 0.5);
+    color: #86efac;
+  }
+  .health-btn.plus:hover {
+    background: rgba(34, 197, 94, 0.5);
+  }
+  .health-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .health-display {
+    text-align: center;
+    min-width: 50px;
+  }
+  .health-number {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .health-max {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.25rem;
+  }
+  .health-bar {
+    height: 0.5rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-top: 0.75rem;
+  }
+  .health-bar-fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: all 0.3s;
+  }
+  .health-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .health-label span {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.7);
+  }
+</style>
+
+<Default {...Astro.props}><slot /></Default>
+
+{isAdventurePage && (
+  <script is:inline>
+    (function() {
+      const MAX_HEALTH = 20;
+      let health = 20;
+      let isOpen = false;
+
+      function getHealthColor() {
+        const percent = (health / MAX_HEALTH) * 100;
+        if (percent > 60) return '#4ade80';
+        if (percent > 30) return '#facc15';
+        return '#f87171';
+      }
+
+      function getHealthBg() {
+        const percent = (health / MAX_HEALTH) * 100;
+        if (percent > 60) return 'rgba(34, 197, 94, 0.2)';
+        if (percent > 30) return 'rgba(250, 204, 21, 0.2)';
+        return 'rgba(239, 68, 68, 0.2)';
+      }
+
+      function updateUI() {
+        const btn = document.getElementById('health-btn');
+        const badge = document.getElementById('health-badge');
+        const number = document.getElementById('health-number');
+        const barFill = document.getElementById('health-bar-fill');
+        const minusBtn = document.getElementById('health-minus');
+        const plusBtn = document.getElementById('health-plus');
+        const heartIcon = document.getElementById('heart-icon');
+
+        const color = getHealthColor();
+        const percent = (health / MAX_HEALTH) * 100;
+
+        if (btn) btn.style.background = getHealthBg();
+        if (badge) {
+          badge.textContent = health;
+          badge.style.color = color;
+        }
+        if (number) {
+          number.textContent = health;
+          number.style.color = color;
+        }
+        if (barFill) {
+          barFill.style.width = percent + '%';
+          barFill.style.background = color;
+        }
+        if (heartIcon) {
+          heartIcon.setAttribute('fill', color);
+          heartIcon.setAttribute('stroke', color);
+        }
+        if (minusBtn) minusBtn.disabled = health <= 0;
+        if (plusBtn) plusBtn.disabled = health >= MAX_HEALTH;
+      }
+
+      function togglePopup() {
+        isOpen = !isOpen;
+        const popup = document.getElementById('health-popup');
+        if (popup) {
+          popup.classList.toggle('open', isOpen);
+        }
+      }
+
+      function adjustHealth(delta) {
+        health = Math.max(0, Math.min(MAX_HEALTH, health + delta));
+        updateUI();
+      }
+
+      function init() {
+        // Find the header right section (where search is)
+        const header = document.querySelector('header.header');
+        const rightGroup = header?.querySelector('.right-group, .sl-flex.right-group');
+
+        if (!rightGroup || document.getElementById('health-tracker-wrapper')) return;
+
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.id = 'health-tracker-wrapper';
+        wrapper.style.cssText = 'position: relative; display: flex; align-items: center;';
+
+        wrapper.innerHTML = `
+          <button id="health-btn" class="health-tracker-btn" aria-label="Toggle Health Tracker">
+            <svg id="heart-icon" viewBox="0 0 24 24" fill="#f87171" stroke="#f87171" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <span id="health-badge" class="health-badge">20</span>
+          </button>
+          <div id="health-popup" class="health-popup">
+            <div class="health-label">
+              <svg viewBox="0 0 24 24" fill="#f87171" stroke="#f87171" stroke-width="2" style="width:1rem;height:1rem;">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+              <span>Health</span>
+            </div>
+            <div class="health-controls">
+              <button id="health-minus" class="health-btn minus">−</button>
+              <div class="health-display">
+                <div id="health-number" class="health-number">20</div>
+                <div class="health-max">/ 20</div>
+              </div>
+              <button id="health-plus" class="health-btn plus">+</button>
+            </div>
+            <div class="health-bar">
+              <div id="health-bar-fill" class="health-bar-fill" style="width:100%;background:#4ade80;"></div>
+            </div>
+          </div>
+        `;
+
+        // Insert before the last child (usually social links or end of header)
+        rightGroup.appendChild(wrapper);
+
+        // Add event listeners
+        document.getElementById('health-btn')?.addEventListener('click', togglePopup);
+        document.getElementById('health-minus')?.addEventListener('click', () => adjustHealth(-1));
+        document.getElementById('health-plus')?.addEventListener('click', () => adjustHealth(1));
+
+        // Close popup when clicking outside
+        document.addEventListener('click', (e) => {
+          const wrapper = document.getElementById('health-tracker-wrapper');
+          if (wrapper && !wrapper.contains(e.target) && isOpen) {
+            isOpen = false;
+            document.getElementById('health-popup')?.classList.remove('open');
+          }
+        });
+
+        updateUI();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+)}
