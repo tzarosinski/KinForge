@@ -8,7 +8,12 @@
       "Bash(npm install)",
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: ParableForge with Astro Starlight\n\n- Landing page with forge glow dark theme and scroll animations\n- Supabase authentication (login, signup flows)\n- Protected Grimoire docs section (Starlight)\n- Sample adventure content (Sky Island)\n- Pages CMS integration for content editing\n- LemonSqueezy payment link placeholder\n- Privacy policy and terms of service pages\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git fetch:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
