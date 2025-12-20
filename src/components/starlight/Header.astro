@@ -219,16 +219,16 @@ const isAdventurePage = Astro.url.pathname.includes('/adventures/');
       }
 
       function init() {
-        // Find the header right section (where search is)
+        // Find the search button (Ctrl+K)
         const header = document.querySelector('header.header');
-        const rightGroup = header?.querySelector('.right-group, .sl-flex.right-group');
+        const searchBtn = header?.querySelector('button[data-open-modal], .search-button, site-search button, [aria-label="Search"]');
 
-        if (!rightGroup || document.getElementById('health-tracker-wrapper')) return;
+        if (!searchBtn || document.getElementById('health-tracker-wrapper')) return;
 
         // Create wrapper
         const wrapper = document.createElement('div');
         wrapper.id = 'health-tracker-wrapper';
-        wrapper.style.cssText = 'position: relative; display: flex; align-items: center;';
+        wrapper.style.cssText = 'position: relative; display: flex; align-items: center; margin-left: 0.75rem;';
 
         wrapper.innerHTML = `
           <button id="health-btn" class="health-tracker-btn" aria-label="Toggle Health Tracker">
@@ -258,8 +258,8 @@ const isAdventurePage = Astro.url.pathname.includes('/adventures/');
           </div>
         `;
 
-        // Insert before the last child (usually social links or end of header)
-        rightGroup.appendChild(wrapper);
+        // Insert right after the search button
+        searchBtn.parentNode?.insertBefore(wrapper, searchBtn.nextSibling);
 
         // Add event listeners
         document.getElementById('health-btn')?.addEventListener('click', togglePopup);
