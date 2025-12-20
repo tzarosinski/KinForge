@@ -1,0 +1,51 @@
+---
+// Custom Head component for Starlight
+// Injects auth check script for protected /grimoire pages
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/Head.astro';
+
+const isGrimoirePage = Astro.url.pathname.startsWith('/grimoire');
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+{isGrimoirePage && (
+  <script is:inline>
+    // Auth guard for Grimoire pages
+    (async function() {
+      // Skip auth check in development (localhost)
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return;
+      }
+
+      const SUPABASE_URL = 'https://fhihhvyfluopxcuezqhi.supabase.co';
+      const SUPABASE_ANON_KEY = ''; // Will be set from env
+
+      // Quick check for session in localStorage
+      const storageKey = 'sb-fhihhvyfluopxcuezqhi-auth-token';
+      const stored = localStorage.getItem(storageKey);
+
+      if (!stored) {
+        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(stored);
+        if (!parsed.access_token || !parsed.expires_at) {
+          throw new Error('Invalid session');
+        }
+
+        // Check if expired
+        const expiresAt = parsed.expires_at * 1000;
+        if (Date.now() > expiresAt) {
+          localStorage.removeItem(storageKey);
+          window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+        }
+      } catch (e) {
+        localStorage.removeItem(storageKey);
+        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+      }
+    })();
+  </script>
+)}

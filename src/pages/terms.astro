@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Terms of Service">
+  <nav class="fixed w-full z-50 glass-panel border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3 group">
+        <svg class="w-8 h-8 text-forge-blue group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span class="font-bold text-lg tracking-tight animate-forge-flow">ParableForge</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <h1 class="text-4xl font-bold text-white mb-8">Terms of Service</h1>
+
+      <div class="prose prose-invert max-w-none space-y-6 text-gray-400">
+        <p><strong class="text-white">Last updated:</strong> {new Date().toLocaleDateString()}</p>
+
+        <h2 class="text-2xl font-bold text-white mt-8">The Simple Version</h2>
+        <p>
+          When you buy ParableForge content, you get a personal license to use it with your family forever. You can't resell it or share your account, but you can create as many adventure memories as you want.
+        </p>
+
+        <h2 class="text-2xl font-bold text-white mt-8">What You Get</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Lifetime access to purchased content</li>
+          <li>Personal use with your immediate family</li>
+          <li>Access to The Grimoire portal</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-white mt-8">Refund Policy</h2>
+        <p>
+          30-day money-back guarantee. If ParableForge doesn't work for your family, email us and we'll refund you—no questions asked.
+        </p>
+
+        <h2 class="text-2xl font-bold text-white mt-8">What You Can't Do</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Resell or redistribute the content</li>
+          <li>Share your account login</li>
+          <li>Use it for commercial purposes</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-white mt-8">Questions?</h2>
+        <p>
+          Email us at <a href="mailto:hello@parableforge.com" class="text-forge-blue underline">hello@parableforge.com</a>
+        </p>
+      </div>
+
+      <div class="mt-12">
+        <a href="/" class="text-forge-blue hover:underline">← Back to Home</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

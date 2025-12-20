@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParableForge - Design Sandbox</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!--
+  ============================================
+  DESIGN SANDBOX - ParableForge Landing Page
+  ============================================
+
+  HOW TO USE THIS FILE:
+  - Edit colors in the Tailwind config below
+  - Modify section styles, spacing, typography
+  - Keep the HTML structure (section IDs, class patterns)
+  - When done, give this file back to Claude to integrate
+
+  COLOR PALETTE (edit these to change the whole site):
+  - pf-primary: Soft Periwinkle Blue (main brand color)
+  - pf-accent: Coral Pink (CTAs, highlights)
+  - pf-green: Mint Green (success, checkmarks)
+  - pf-cream: Cream (backgrounds)
+  - pf-gold: Soft Gold (premium, emphasis)
+  ============================================
+  -->
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'pf-primary': '#6F8AB7',
+            'pf-primary-dark': '#5A7199',
+            'pf-primary-light': '#8FA3C5',
+            'pf-accent': '#F79F8E',
+            'pf-green': '#9BCEA0',
+            'pf-cream': '#F8F3E2',
+            'pf-gold': '#F0D28A',
+          },
+          fontFamily: {
+            'display': ['Nunito', 'system-ui', 'sans-serif'],
+            'body': ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Nunito', system-ui, sans-serif; }
+  </style>
+</head>
+
+<body class="bg-pf-cream text-gray-700 antialiased">
+
+  <!-- ==================== SECTION: PRE-HEADER BAR ==================== -->
+  <!-- Sticky header with brand + CTA -->
+  <div id="pre-header" class="bg-pf-primary text-pf-cream py-2.5 px-4 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <span class="font-display font-extrabold text-lg text-white">ParableForge</span>
+      <a href="#free-adventure" class="bg-pf-accent text-white px-4 py-1.5 rounded-md font-semibold text-sm hover:bg-pf-accent/90 transition-all hover:-translate-y-0.5">
+        Get Free Adventure →
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION: HERO ==================== -->
+  <section id="hero" class="px-4 sm:px-6 lg:px-8 bg-pf-cream pt-12 pb-12 text-center">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-pf-gold font-bold text-sm tracking-widest uppercase mb-4">Screen-Free Family Adventures</p>
+      <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-pf-primary leading-tight">
+        Give Them a Childhood<br class="hidden sm:block"> Worth Remembering
+      </h1>
+      <p class="text-xl md:text-2xl mt-4 max-w-3xl mx-auto text-gray-700">
+        Epic family adventures. Zero prep. Even when you're exhausted.
+      </p>
+
+      <!-- Trust Badges -->
+      <div class="flex flex-wrap justify-center gap-4 sm:gap-8 mt-6 text-sm text-gray-600">
+        <div class="flex items-center gap-2">
+          <span class="text-pf-green font-bold">✓</span> 30-45 Minutes
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-pf-green font-bold">✓</span> Ages 4-12
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-pf-green font-bold">✓</span> Zero Prep
+        </div>
+      </div>
+
+      <!-- StoryBrand: Transitional CTA in Hero (lower barrier) -->
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#free-adventure" class="inline-block px-8 py-4 text-lg font-bold rounded-xl bg-pf-accent text-white hover:bg-pf-accent/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+          Download Free Adventure
+        </a>
+        <a href="#pricing" class="inline-block px-6 py-4 text-lg font-semibold text-pf-primary hover:text-pf-primary-dark transition-colors">
+          See All Adventures →
+        </a>
+      </div>
+      <p class="mt-3 text-sm text-gray-600">Open. Read. Play. Forge Memories.</p>
+
+      <!-- Hero Image Placeholder -->
+      <div class="mt-12 max-w-2xl mx-auto">
+        <div class="aspect-video bg-pf-primary/20 rounded-2xl flex items-center justify-center border-2 border-dashed border-pf-primary/40">
+          <div class="text-center p-8">
+            <svg class="w-16 h-16 mx-auto text-pf-primary/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="mt-2 text-pf-primary/60 font-medium">Hero Image: Parent & Child Connection</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: PROBLEM ==================== -->
+  <!-- StoryBrand: External, Internal, and Philosophical Problems -->
+  <section id="problem" class="px-4 sm:px-6 lg:px-8 bg-white py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-accent mb-10 text-center font-display">
+        Sound Familiar?
+      </h2>
+
+      <!-- Pain Points Grid - External Problems -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div class="text-center p-6 bg-pf-cream rounded-xl hover:-translate-y-1 transition-transform">
+          <div class="text-4xl mb-3">😔</div>
+          <h3 class="font-bold text-pf-primary mb-2">Quality Time Guilt</h3>
+          <p class="text-sm text-gray-600">You want meaningful moments but come home with nothing left to give</p>
+        </div>
+        <div class="text-center p-6 bg-pf-cream rounded-xl hover:-translate-y-1 transition-transform">
+          <div class="text-4xl mb-3">🎨</div>
+          <h3 class="font-bold text-pf-primary mb-2">"I'm Not Creative"</h3>
+          <p class="text-sm text-gray-600">You feel like a failure when you can't think of anything fun to do together</p>
+        </div>
+        <div class="text-center p-6 bg-pf-cream rounded-xl hover:-translate-y-1 transition-transform">
+          <div class="text-4xl mb-3">🎲</div>
+          <h3 class="font-bold text-pf-primary mb-2">Games That Fizzle</h3>
+          <p class="text-sm text-gray-600">Board games end in arguments or boredom after ten minutes</p>
+        </div>
+        <div class="text-center p-6 bg-pf-cream rounded-xl hover:-translate-y-1 transition-transform">
+          <div class="text-4xl mb-3">⏰</div>
+          <h3 class="font-bold text-pf-primary mb-2">Time Slipping Away</h3>
+          <p class="text-sm text-gray-600">You feel the weight of knowing these years won't last forever</p>
+        </div>
+      </div>
+
+      <!-- Internal + Philosophical Problem -->
+      <div class="max-w-3xl mx-auto text-center space-y-4">
+        <p class="text-lg text-gray-600 italic">
+          You feel like you're failing at the one thing that matters most.
+        </p>
+        <p class="text-xl font-semibold text-pf-primary">
+          Every child deserves a parent who's fully present. What if you could be that parent—without needing energy you don't have?
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: GUIDE ==================== -->
+  <section id="guide" class="px-4 sm:px-6 lg:px-8 bg-pf-cream py-16">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+        <div class="md:w-1/3">
+          <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-6 font-display">
+            I Built This Because I Was Failing
+          </h2>
+          <div class="space-y-2 text-sm text-gray-600 bg-white/50 p-4 rounded-lg">
+            <p class="font-bold text-pf-primary">Authority Markers:</p>
+            <p>✓ Tested with 100+ families</p>
+            <p>✓ Designed for exhausted parents</p>
+            <p>✓ Ages 4-12</p>
+          </div>
+        </div>
+        <div class="md:w-2/3 space-y-4 text-lg text-gray-700">
+          <p>I'm Tom—a dad who wanted to be present but kept coming up short.</p>
+          <p>I'd get home exhausted. I'd <em>want</em> to engage my kids. But I had no idea how to make it happen without energy I didn't have.</p>
+          <p>So I built something different.</p>
+          <p>ParableForge is the storytelling system I created so that any parent—even one running on fumes—can create adventures their kids will talk about for years.</p>
+          <p class="font-medium text-pf-primary">Everything is scripted. You just read. Your kids imagine. And somehow, you become the most interesting part of their day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: 3-STEP PLAN ==================== -->
+  <section id="plan" class="px-4 sm:px-6 lg:px-8 bg-white py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-4 text-center font-display">
+        Three Steps to Adventure Night
+      </h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">It's easier than you think. No creativity required—just follow the script.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <!-- Step 1 -->
+        <div class="text-center p-6 bg-pf-green/20 rounded-xl shadow-md">
+          <div class="text-4xl mb-3">📖</div>
+          <p class="text-5xl font-extrabold text-pf-gold mb-3 font-display">1</p>
+          <h3 class="text-xl font-semibold text-pf-primary font-display">Open the Adventure</h3>
+          <p class="mt-2 text-gray-700">No prep. No reading ahead. Just open to page one and start.</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="text-center p-6 bg-pf-green/20 rounded-xl shadow-md">
+          <div class="text-4xl mb-3">🎯</div>
+          <p class="text-5xl font-extrabold text-pf-gold mb-3 font-display">2</p>
+          <h3 class="text-xl font-semibold text-pf-primary font-display">Read the Prompts</h3>
+          <p class="mt-2 text-gray-700">Everything you need to say is scripted. You just read—your kids do the imagining.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="text-center p-6 bg-pf-green/20 rounded-xl shadow-md">
+          <div class="text-4xl mb-3">✨</div>
+          <p class="text-5xl font-extrabold text-pf-gold mb-3 font-display">3</p>
+          <h3 class="text-xl font-semibold text-pf-primary font-display">Watch Them Light Up</h3>
+          <p class="mt-2 text-gray-700">Ask "What do you do?" and watch your child become the hero of their own story.</p>
+        </div>
+      </div>
+
+      <!-- Callout Box -->
+      <div class="mt-10 bg-pf-cream border-2 border-pf-gold rounded-xl p-6 text-center max-w-3xl mx-auto">
+        <p class="text-gray-700">
+          <span class="font-semibold">⏱️ Just 30-45 minutes</span> •
+          <span class="font-semibold">🏠 Uses household items</span> •
+          <span class="font-semibold">👨‍👩‍👧‍👦 Perfect for 1-3 kids</span>
+        </p>
+      </div>
+
+      <p class="text-center text-xl font-medium mt-8 max-w-2xl mx-auto text-pf-primary">
+        That's it. 30 minutes from "I'm tired" to "Can we do this again tomorrow?"
+      </p>
+
+      <!-- StoryBrand: CTA after Plan -->
+      <div class="mt-10 text-center">
+        <a href="#free-adventure" class="inline-block px-8 py-4 text-lg font-bold rounded-xl bg-pf-accent text-white hover:bg-pf-accent/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+          Download Your Free Adventure
+        </a>
+        <p class="mt-3 text-sm text-gray-500">Try it tonight. No credit card required.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: FAILURE/STAKES ==================== -->
+  <section id="failure" class="px-4 sm:px-6 lg:px-8 bg-pf-primary text-white py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-accent mb-8 text-center font-display">
+        The Cost of "Maybe Next Week"
+      </h2>
+      <div class="max-w-2xl mx-auto space-y-4 text-lg">
+        <p>Every week that passes is another week of:</p>
+        <ul class="space-y-2 ml-4">
+          <li class="flex items-center gap-3"><span class="text-pf-accent">•</span> Evenings that blur together</li>
+          <li class="flex items-center gap-3"><span class="text-pf-accent">•</span> Conversations that stay surface-level</li>
+          <li class="flex items-center gap-3"><span class="text-pf-accent">•</span> Inside jokes you never create</li>
+          <li class="flex items-center gap-3"><span class="text-pf-accent">•</span> A childhood moving faster than you realize</li>
+        </ul>
+        <p class="mt-6 font-semibold">Kids don't stay kids. And they won't remember the nights everyone was in the same room doing their own thing.</p>
+        <p class="font-extrabold text-pf-gold text-xl">They remember the adventures.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: SUCCESS ==================== -->
+  <section id="success" class="px-4 sm:px-6 lg:px-8 bg-white py-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-8 text-center font-display">
+        Imagine This Instead
+      </h2>
+      <div class="space-y-4 text-lg text-gray-700">
+        <p>Your 7-year-old rushes to finish dinner because adventure night is next.</p>
+        <p>You're not performing or pretending to have energy you don't have. You're just reading—and somehow it's magic.</p>
+        <p>You overhear your kids telling friends about "the time we saved the village from the shadow wolves."</p>
+        <p class="font-semibold text-pf-primary">Years from now, they'll tell their own kids about the adventures you created together.</p>
+        <p>This is the parent you wanted to be. And it didn't require superhuman energy—just the right tool.</p>
+      </div>
+      <div class="mt-10 text-center">
+        <a href="#free-adventure" class="inline-block px-8 py-4 text-lg font-bold rounded-xl bg-pf-accent text-white hover:bg-pf-accent/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+          Start With a Free Adventure
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: IS THIS FOR YOUR FAMILY? ==================== -->
+  <!-- Self-identification checklist - helps visitors see themselves -->
+  <section id="perfect-for" class="px-4 sm:px-6 lg:px-8 bg-pf-cream py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-4 text-center font-display">
+        Is This For Your Family?
+      </h2>
+      <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">If any of these sound like you, ParableForge was built for your family.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 max-w-4xl mx-auto mb-10">
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Parents who come home exhausted but still want quality time</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Families who value character development over passive entertainment</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Parents who think "I'm not creative enough" for this</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Kids ages 4-12 who love making choices and being heroes</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Busy families who need zero-prep activities</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Parents who prefer guiding over lecturing</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Homeschoolers seeking character-building curriculum</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Anyone wanting to build lasting family traditions</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Parents tired of screen time negotiations</span>
+        </div>
+        <div class="flex items-start gap-3 text-gray-700">
+          <span class="text-pf-green font-bold text-xl flex-shrink-0">✓</span>
+          <span>Families wanting deeper connection—not just activities</span>
+        </div>
+      </div>
+
+      <!-- Not Sure CTA Box -->
+      <div class="bg-white p-8 rounded-xl shadow-lg max-w-xl mx-auto text-center">
+        <h3 class="text-xl font-bold text-pf-primary font-display mb-2">Not sure yet?</h3>
+        <p class="text-gray-600 mb-6">Try one adventure free. One evening. No commitment. See what happens.</p>
+        <a href="#free-adventure" class="inline-block px-6 py-3 font-bold rounded-lg bg-pf-accent text-white hover:bg-pf-accent/90 transition-all hover:-translate-y-0.5">
+          Send Me the Free Adventure
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: TESTIMONIALS ==================== -->
+  <section id="testimonials" class="px-4 sm:px-6 lg:px-8 bg-white py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-accent mb-12 text-center font-display">
+        Families Are Doing This Every Week
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-10">
+        <!-- Testimonial 1 -->
+        <blockquote class="p-6 bg-pf-cream rounded-xl shadow-lg border-t-4 border-pf-primary h-full flex flex-col">
+          <div class="text-pf-gold mb-2">★★★★★</div>
+          <p class="italic text-gray-700 flex-grow">"My 6-year-old asks for 'adventure time' every single night now. Last week, he chose to help a lost creature instead of taking the treasure. We talked about kindness for an hour afterward."</p>
+          <footer class="mt-4">
+            <p class="font-bold text-pf-primary">— Sarah M.</p>
+            <p class="text-sm text-gray-500">Mom of 2 • After first adventure</p>
+          </footer>
+        </blockquote>
+        <!-- Testimonial 2 -->
+        <blockquote class="p-6 bg-pf-cream rounded-xl shadow-lg border-t-4 border-pf-primary h-full flex flex-col">
+          <div class="text-pf-gold mb-2">★★★★★</div>
+          <p class="italic text-gray-700 flex-grow">"I was skeptical I could 'run' something like this. But the prompts make it so easy. I actually look forward to our Sunday adventures now—and I'm not an energetic person."</p>
+          <footer class="mt-4">
+            <p class="font-bold text-pf-primary">— Mike D.</p>
+            <p class="text-sm text-gray-500">Father • After 2 weeks</p>
+          </footer>
+        </blockquote>
+        <!-- Testimonial 3 -->
+        <blockquote class="p-6 bg-pf-cream rounded-xl shadow-lg border-t-4 border-pf-primary h-full flex flex-col">
+          <div class="text-pf-gold mb-2">★★★★★</div>
+          <p class="italic text-gray-700 flex-grow">"This has become our family tradition. Even our teenager joins in. Best purchase we've made for our family."</p>
+          <footer class="mt-4">
+            <p class="font-bold text-pf-primary">— The Johnson Family</p>
+            <p class="text-sm text-gray-500">After 1 month</p>
+          </footer>
+        </blockquote>
+      </div>
+
+      <!-- Mini Testimonials Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-pf-cream/50 border border-pf-primary/20 rounded-lg p-4 text-center text-sm text-gray-600">
+          "Finally, family time that isn't a screen" — David L.
+        </div>
+        <div class="bg-pf-cream/50 border border-pf-primary/20 rounded-lg p-4 text-center text-sm text-gray-600">
+          "My kids remember these adventures weeks later" — Amanda C.
+        </div>
+        <div class="bg-pf-cream/50 border border-pf-primary/20 rounded-lg p-4 text-center text-sm text-gray-600">
+          "I feel confident facilitating now" — Rebecca S.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: WHY CHOOSE PARABLEFORGE ==================== -->
+  <!-- Comparison table - handles objections, positions against alternatives -->
+  <section id="comparison" class="px-4 sm:px-6 lg:px-8 bg-pf-cream py-16">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-10 text-center font-display">
+        Why Choose ParableForge?
+      </h2>
+
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <table class="w-full text-left">
+          <thead>
+            <tr>
+              <th class="bg-pf-primary text-white p-4 font-semibold"></th>
+              <th class="bg-pf-primary/80 text-white p-4 font-semibold text-center">Screen Time</th>
+              <th class="bg-pf-primary/80 text-white p-4 font-semibold text-center">Board Games</th>
+              <th class="bg-pf-accent text-white p-4 font-semibold text-center">ParableForge</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm">
+            <tr class="border-b border-gray-100">
+              <td class="p-4 font-medium text-gray-700">Engagement</td>
+              <td class="p-4 text-center text-gray-500">Passive</td>
+              <td class="p-4 text-center text-gray-500">Competitive</td>
+              <td class="p-4 text-center font-semibold text-pf-primary">Collaborative</td>
+            </tr>
+            <tr class="border-b border-gray-100 bg-pf-cream/30">
+              <td class="p-4 font-medium text-gray-700">Prep Time</td>
+              <td class="p-4 text-center text-gray-500">None</td>
+              <td class="p-4 text-center text-gray-500">Setup required</td>
+              <td class="p-4 text-center font-semibold text-pf-green">Zero ✓</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="p-4 font-medium text-gray-700">Character Development</td>
+              <td class="p-4 text-center text-gray-400">—</td>
+              <td class="p-4 text-center text-gray-500">Limited</td>
+              <td class="p-4 text-center font-semibold text-pf-green">Built-in ✓</td>
+            </tr>
+            <tr class="border-b border-gray-100 bg-pf-cream/30">
+              <td class="p-4 font-medium text-gray-700">Parent Confidence</td>
+              <td class="p-4 text-center text-gray-500">N/A</td>
+              <td class="p-4 text-center text-gray-500">Assumed</td>
+              <td class="p-4 text-center font-semibold text-pf-green">Scripted ✓</td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="p-4 font-medium text-gray-700">Memorable Moments</td>
+              <td class="p-4 text-center text-gray-400">—</td>
+              <td class="p-4 text-center text-gray-500">Sometimes</td>
+              <td class="p-4 text-center font-semibold text-pf-green">Every time ✓</td>
+            </tr>
+            <tr class="bg-pf-cream/30">
+              <td class="p-4 font-medium text-gray-700">Builds Connection</td>
+              <td class="p-4 text-center text-gray-400">—</td>
+              <td class="p-4 text-center text-gray-500">Sometimes</td>
+              <td class="p-4 text-center font-semibold text-pf-green">Always ✓</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: FREE OFFER ==================== -->
+  <!-- StoryBrand: Transitional CTA - Lead Magnet -->
+  <section id="free-adventure" class="px-4 sm:px-6 lg:px-8 bg-pf-green/30 py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-4 text-center font-display">
+        Try Your First Adventure Free
+      </h2>
+      <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">See what one evening with ParableForge can do for your family. No commitment required.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+        <!-- Offer Details -->
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-xl">
+          <h3 class="text-2xl font-bold text-pf-primary font-display">The Mysterious Sky Island</h3>
+          <p class="text-gray-600 italic mt-2">A complete 45-minute adventure designed for first-time families.</p>
+          <ul class="mt-4 space-y-2 text-gray-700">
+            <li class="flex items-start gap-2"><span class="text-pf-green font-bold">✓</span> Word-for-word script (just read and play)</li>
+            <li class="flex items-start gap-2"><span class="text-pf-green font-bold">✓</span> Simple character creation your kids will love</li>
+            <li class="flex items-start gap-2"><span class="text-pf-green font-bold">✓</span> 2-minute rules (seriously, that's it)</li>
+            <li class="flex items-start gap-2"><span class="text-pf-green font-bold">✓</span> Tips for tired first-time storytellers</li>
+          </ul>
+          <p class="mt-6 text-sm text-gray-500 font-medium">Instant download. Start playing tonight.</p>
+        </div>
+        <!-- Form Placeholder -->
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-xl border-2 border-dashed border-pf-primary/30">
+          <div class="text-center mb-4">
+            <p class="font-bold text-pf-primary">Tally.so Form Placeholder</p>
+            <p class="text-sm text-gray-500">Replace with your Tally embed</p>
+          </div>
+          <form class="space-y-4">
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Where should we send it?</label>
+              <input type="email" id="email" placeholder="your@email.com" class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-pf-primary focus:outline-none transition-colors">
+            </div>
+            <button type="submit" class="w-full bg-pf-accent text-white font-bold py-3 rounded-lg hover:bg-pf-accent/90 transition-all duration-200 hover:-translate-y-0.5">
+              Send Me the Free Adventure
+            </button>
+          </form>
+          <p class="text-center text-xs text-gray-500 mt-4">We'll email you the PDF instantly. No spam, ever.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: PRICING ==================== -->
+  <!-- StoryBrand: Direct CTAs - specific action verbs -->
+  <section id="pricing" class="px-4 sm:px-6 lg:px-8 bg-white py-16">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-4 text-center font-display">
+        Ready for More Adventures?
+      </h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Choose the collection that fits your family. All purchases include instant access and a 30-day money-back guarantee.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch">
+        <!-- Tier 1: Starter -->
+        <div class="p-6 rounded-xl shadow-lg border-t-4 border-pf-gold bg-pf-cream h-full flex flex-col">
+          <h3 class="text-2xl font-bold text-pf-primary font-display">Starter Collection</h3>
+          <p class="text-4xl font-extrabold text-pf-gold my-3 font-display">$39</p>
+          <ul class="space-y-2 flex-grow">
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-gray-700">3 complete adventures (6+ hours of family time)</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-gray-700">Character creation kit</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-gray-700">Parent confidence guide</span></li>
+          </ul>
+          <button class="w-full mt-6 py-3 rounded-lg font-bold bg-pf-primary text-white hover:bg-pf-primary/90 transition-all duration-200 hover:-translate-y-0.5">Buy Starter Collection</button>
+        </div>
+        <!-- Tier 2: Explorer (Featured) -->
+        <div class="p-6 rounded-xl shadow-2xl border-t-4 border-pf-gold bg-pf-primary text-white h-full flex flex-col scale-105">
+          <p class="text-center text-sm font-bold text-pf-gold mb-2 uppercase tracking-wide">Most Popular</p>
+          <h3 class="text-2xl font-bold text-white font-display">Explorer's Edition</h3>
+          <p class="text-4xl font-extrabold text-pf-gold my-3 font-display">$69</p>
+          <ul class="space-y-2 flex-grow">
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-white/90">8 interconnected adventures (20+ hours)</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-white/90">Character progression system</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-white/90">Advanced storytelling tools</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-white/90">Digital adventure builder</span></li>
+          </ul>
+          <button class="w-full mt-6 py-3 rounded-lg font-bold bg-pf-gold text-pf-primary hover:bg-pf-gold/90 transition-all duration-200 hover:-translate-y-0.5">Buy Explorer's Edition</button>
+        </div>
+        <!-- Tier 3: Legendary -->
+        <div class="p-6 rounded-xl shadow-lg border-t-4 border-pf-gold bg-pf-cream h-full flex flex-col">
+          <h3 class="text-2xl font-bold text-pf-primary font-display">Legendary Collection</h3>
+          <p class="text-4xl font-extrabold text-pf-gold my-3 font-display">$99</p>
+          <ul class="space-y-2 flex-grow">
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-gray-700">15 adventures across multiple worlds</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-gray-700">Premium artwork</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-gray-700">Exclusive expansions</span></li>
+            <li class="flex items-start gap-2"><span class="text-pf-gold">✓</span><span class="text-gray-700">1-on-1 family adventure consultation</span></li>
+          </ul>
+          <button class="w-full mt-6 py-3 rounded-lg font-bold bg-pf-primary text-white hover:bg-pf-primary/90 transition-all duration-200 hover:-translate-y-0.5">Buy Legendary Collection</button>
+        </div>
+      </div>
+      <!-- Transitional CTA below pricing -->
+      <p class="text-center mt-10 text-gray-600">
+        Not ready to buy? <a href="#free-adventure" class="text-pf-primary font-semibold underline hover:text-pf-primary-dark">Download the free adventure first →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: FAQ ==================== -->
+  <section id="faq" class="px-4 sm:px-6 lg:px-8 bg-pf-primary/10 py-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-primary mb-12 text-center font-display">
+        Quick Answers
+      </h2>
+      <dl class="space-y-6">
+        <div class="border-b border-pf-primary/20 pb-6">
+          <dt class="font-bold text-lg text-pf-primary">I'm exhausted after work. Do I really have the energy for this?</dt>
+          <dd class="mt-2 text-gray-700">That's exactly who this is for. You read prompts. Your kids imagine. There's nothing to prepare, nothing to memorize, nothing to create. If you can read a bedtime story, you can do this.</dd>
+        </div>
+        <div class="border-b border-pf-primary/20 pb-6">
+          <dt class="font-bold text-lg text-pf-primary">I've never done anything like this. Can I really lead an adventure?</dt>
+          <dd class="mt-2 text-gray-700">Yes. Everything is scripted. You're not improvising or performing—you're just reading and asking "What do you do?" Your kids do the rest.</dd>
+        </div>
+        <div class="border-b border-pf-primary/20 pb-6">
+          <dt class="font-bold text-lg text-pf-primary">What if my kids aren't into fantasy stuff?</dt>
+          <dd class="mt-2 text-gray-700">The system works with any theme. Many families adapt it for space, mystery, or modern-day heroes. Fantasy is just the starting point.</dd>
+        </div>
+        <div class="border-b border-pf-primary/20 pb-6">
+          <dt class="font-bold text-lg text-pf-primary">How is this different from reading books together?</dt>
+          <dd class="mt-2 text-gray-700">In a book, your child listens. In this, they're the hero making choices. It's the difference between watching a movie and starring in one.</dd>
+        </div>
+        <div class="border-b border-pf-primary/20 pb-6">
+          <dt class="font-bold text-lg text-pf-primary">What ages work best?</dt>
+          <dd class="mt-2 text-gray-700">4-12, with adventures that scale. Younger kids make simple choices; older kids tackle moral dilemmas. Mixed-age families work great.</dd>
+        </div>
+        <div class="border-b border-pf-primary/20 pb-6">
+          <dt class="font-bold text-lg text-pf-primary">How long does each adventure take?</dt>
+          <dd class="mt-2 text-gray-700">30-60 minutes. Perfect for after dinner. You can pause anytime.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ==================== SECTION: FINAL CTA ==================== -->
+  <!-- StoryBrand: Final push - Both Direct + Transitional CTAs -->
+  <section id="final-cta" class="px-4 sm:px-6 lg:px-8 bg-pf-primary text-white py-16 text-center">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-pf-gold mb-6 font-display">
+        Their Childhood Won't Wait
+      </h2>
+      <div class="max-w-2xl mx-auto space-y-4 text-lg">
+        <p>In 5 minutes, you could be starting your first quest together.</p>
+        <p>Your child could be making their first heroic choice.</p>
+        <p>You could be creating a memory that lasts longer than tonight.</p>
+        <p class="font-medium">And you don't need energy you don't have. Just the right tool.</p>
+      </div>
+      <!-- Both CTAs - Direct prominent, Transitional below -->
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#pricing" class="inline-block px-8 py-4 text-lg font-bold rounded-xl bg-pf-gold text-pf-primary-dark hover:bg-pf-gold/90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+          Buy Your Adventure Collection
+        </a>
+        <a href="#free-adventure" class="inline-block px-8 py-4 text-lg font-semibold rounded-xl border-2 border-white/50 text-white hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-200">
+          Try Free First
+        </a>
+      </div>
+      <p class="mt-6 text-sm text-pf-cream/80">30-day money-back guarantee on all purchases</p>
+      <p class="mt-8 text-pf-cream/80 italic">
+        The best time to start creating memories was ten years ago. The second best time is tonight.
+      </p>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+---
+// AuthGuard component - wraps protected content
+// Checks authentication client-side and redirects if not logged in
+---
+
+<div id="auth-guard-wrapper">
+  <div id="auth-loading" class="min-h-screen flex items-center justify-center bg-pf-cream">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-pf-periwinkle border-t-transparent mx-auto mb-4"></div>
+      <p class="text-pf-periwinkle font-medium">Verifying access...</p>
+    </div>
+  </div>
+  <div id="auth-content" class="hidden">
+    <slot />
+  </div>
+</div>
+
+<script>
+  import { getSession } from '../lib/supabase';
+
+  async function checkAuth() {
+    const loadingEl = document.getElementById('auth-loading');
+    const contentEl = document.getElementById('auth-content');
+
+    const { session, error } = await getSession();
+
+    if (!session || error) {
+      // Not authenticated, redirect to login
+      window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+      return;
+    }
+
+    // Authenticated, show content
+    if (loadingEl) loadingEl.classList.add('hidden');
+    if (contentEl) contentEl.classList.remove('hidden');
+  }
+
+  // Run on page load
+  checkAuth();
+
+  // Also listen for auth state changes
+  import { supabase } from '../lib/supabase';
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT') {
+      window.location.href = '/login';
+    }
+  });
+</script>
