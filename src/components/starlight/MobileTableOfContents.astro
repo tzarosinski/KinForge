@@ -1,0 +1,205 @@
+---
+// Simplify the component to not rely on Starlight's TableOfContentsList
+const { toc } = Astro.locals.starlightRoute;
+---
+
+{
+	toc && (
+		<mobile-starlight-toc data-min-h={toc.minHeadingLevel} data-max-h={toc.maxHeadingLevel}>
+			<nav aria-labelledby="starlight__on-this-page--mobile">
+				<details id="starlight__mobile-toc">
+					<summary id="starlight__on-this-page--mobile" class="sl-flex">
+						<span class="toggle sl-flex">
+							{Astro.locals.t('tableOfContents.onThisPage')}
+							<svg class="caret" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+								<path fill="currentColor" d="M9.293 6.293a1 1 0 0 1 1.414 0l5 5a1 1 0 0 1 0 1.414l-5 5a1 1 0 0 1-1.414-1.414L13.586 12 9.293 7.707a1 1 0 0 1 0-1.414z"/>
+							</svg>
+						</span>
+						<span class="display-current" />
+					</summary>
+					<div class="dropdown">
+						<ul>
+							{toc.items.map(heading => (
+								<li class:list={{ heading: true, [`depth-${heading.depth}`]: true }}>
+									<a href={`#${heading.slug}`}>{heading.text}</a>
+									{heading.children.length > 0 && (
+										<ul>
+											{heading.children.map(subheading => (
+												<li class:list={{ heading: true, [`depth-${subheading.depth}`]: true }}>
+													<a href={`#${subheading.slug}`}>{subheading.text}</a>
+												</li>
+											))}
+										</ul>
+									)}
+								</li>
+							))}
+						</ul>
+					</div>
+				</details>
+			</nav>
+		</mobile-starlight-toc>
+	)
+}
+
+<style>
+	@layer starlight.core {
+		nav {
+			position: fixed;
+			z-index: var(--sl-z-index-toc);
+			/* Modified positioning - adjust these values as needed */
+			top: calc(var(--sl-nav-height) - 1px);
+			inset-inline: 0;
+			/* More visible border */
+			border-top: 2px solid var(--sl-color-accent);
+			background-color: var(--sl-color-bg-nav);
+			/* Add a subtle shadow for better visibility */
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+		
+		/* Responsive adjustments */
+		@media (min-width: 50rem) {
+			nav {
+				inset-inline-start: var(--sl-content-inline-start, 0);
+			}
+		}
+
+		/* Improved touch target size for mobile */
+		summary {
+			gap: 0.5rem;
+			align-items: center;
+			height: var(--sl-mobile-toc-height);
+			border-bottom: 1px solid var(--sl-color-hairline-shade);
+			padding: 0.75rem 1rem; /* Increased padding for better touch target */
+			font-size: var(--sl-text-sm); /* Slightly larger text */
+			outline-offset: var(--sl-outline-offset-inside);
+		}
+		summary::marker,
+		summary::-webkit-details-marker {
+			display: none;
+		}
+
+		.toggle {
+			flex-shrink: 0;
+			gap: 1rem;
+			align-items: center;
+			justify-content: space-between;
+			border: 1px solid var(--sl-color-gray-5);
+			border-radius: 0.5rem;
+			padding-block: 0.5rem;
+			padding-inline-start: 0.75rem;
+			padding-inline-end: 0.5rem;
+			line-height: 1;
+			background-color: var(--sl-color-black);
+			user-select: none;
+			cursor: pointer;
+		}
+		details[open] .toggle {
+			color: var(--sl-color-white);
+			border-color: var(--sl-color-accent);
+		}
+		details .toggle:hover {
+			color: var(--sl-color-white);
+			border-color: var(--sl-color-gray-2);
+		}
+
+		:global([dir='rtl']) .caret {
+			transform: rotateZ(180deg);
+		}
+		details[open] .caret {
+			transform: rotateZ(90deg);
+		}
+
+		.display-current {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			color: var(--sl-color-white);
+			font-weight: 500; /* Make current heading slightly bolder */
+		}
+
+		/* Improved dropdown appearance and sizing */
+		.dropdown {
+			--border-top: 1px;
+			margin-top: calc(-1 * var(--border-top));
+			border: var(--border-top) solid var(--sl-color-gray-6);
+			border-top-color: var(--sl-color-hairline-shade);
+			/* Adjusted max-height for better visibility on smaller screens */
+			max-height: calc(80vh - var(--sl-nav-height) - var(--sl-mobile-toc-height));
+			overflow-y: auto;
+			background-color: var(--sl-color-black);
+			box-shadow: var(--sl-shadow-md);
+			overscroll-behavior: contain;
+			/* Smoother scrolling */
+			scroll-behavior: smooth;
+			/* Improved scrollbar styling */
+			scrollbar-width: thin;
+			scrollbar-color: var(--sl-color-gray-5) transparent;
+		}
+		
+		/* Custom scrollbar for WebKit browsers */
+		.dropdown::-webkit-scrollbar {
+			width: 6px;
+		}
+		.dropdown::-webkit-scrollbar-thumb {
+			background-color: var(--sl-color-gray-5);
+			border-radius: 3px;
+		}
+		.dropdown::-webkit-scrollbar-track {
+			background-color: transparent;
+		}
+	}
+</style>
+
+<script>
+	// Create a simplified version of the StarlightTOC class
+	class MobileStarlightTOC extends HTMLElement {
+		// The minimum and maximum heading levels to include
+		private minH = 2;
+		private maxH = 3;
+		private _current: HTMLAnchorElement | null = null;
+
+		// Implementation for setting the current heading
+		set current(link: HTMLAnchorElement) {
+			this._current = link;
+			const display = this.querySelector('.display-current') as HTMLSpanElement;
+			if (display) display.textContent = link.textContent;
+		}
+
+		constructor() {
+			super();
+			
+			// Set min/max heading levels from data attributes
+			const minH = this.dataset.minH ? parseInt(this.dataset.minH) : 2;
+			const maxH = this.dataset.maxH ? parseInt(this.dataset.maxH) : 3;
+			this.minH = minH;
+			this.maxH = maxH;
+
+			const details = this.querySelector('details');
+			if (!details) return;
+			const closeToC = () => {
+				details.open = false;
+			};
+			// Close the table of contents whenever a link is clicked.
+			details.querySelectorAll('a').forEach((a) => {
+				a.addEventListener('click', closeToC);
+			});
+			// Close the table of contents when a user clicks outside of it.
+			window.addEventListener('click', (e) => {
+				if (!details.contains(e.target as Node)) closeToC();
+			});
+			// Or when they press the escape key.
+			window.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && details.open) {
+					const hasFocus = details.contains(document.activeElement);
+					closeToC();
+					if (hasFocus) {
+						const summary = details.querySelector('summary');
+						if (summary) summary.focus();
+					}
+				}
+			});
+		}
+	}
+
+	customElements.define('mobile-starlight-toc', MobileStarlightTOC);
+</script>

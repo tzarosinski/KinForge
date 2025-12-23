@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Privacy Policy">
+  <nav class="fixed w-full z-50 glass-panel border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3 group">
+        <svg class="w-8 h-8 text-forge-blue group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span class="font-bold text-lg tracking-tight animate-forge-flow">ParableForge</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <h1 class="text-4xl font-bold text-white mb-8">Privacy Policy</h1>
+
+      <div class="prose prose-invert max-w-none space-y-6 text-gray-400">
+        <p><strong class="text-white">Last updated:</strong> {new Date().toLocaleDateString()}</p>
+
+        <h2 class="text-2xl font-bold text-white mt-8">What We Collect</h2>
+        <p>
+          When you purchase from ParableForge, we collect your email address to create your account and deliver your purchase. We use LemonSqueezy for payment processing—we never see or store your payment card details.
+        </p>
+
+        <h2 class="text-2xl font-bold text-white mt-8">How We Use Your Information</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>To deliver your purchased content</li>
+          <li>To send occasional product updates (you can unsubscribe anytime)</li>
+          <li>To respond to support requests</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-white mt-8">We Never</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Sell your data to third parties</li>
+          <li>Share your email with advertisers</li>
+          <li>Track you across the web</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-white mt-8">Questions?</h2>
+        <p>
+          Email us at <a href="mailto:hello@parableforge.com" class="text-forge-blue underline">hello@parableforge.com</a>
+        </p>
+      </div>
+
+      <div class="mt-12">
+        <a href="/" class="text-forge-blue hover:underline">← Back to Home</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,540 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Family Adventures That Last">
+  <!-- Navigation -->
+  <nav class="fixed w-full z-50 glass-panel border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-3 group">
+        <svg class="w-8 h-8 text-forge-blue group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span class="font-bold text-lg tracking-tight animate-forge-flow">ParableForge</span>
+      </a>
+      <div class="flex items-center gap-6">
+        <a href="/login" class="text-sm font-medium text-gray-400 hover:text-forge-blue transition-colors">
+          Login
+        </a>
+        <a href="#offer" class="px-5 py-2.5 bg-forge-blue hover:bg-blue-600 text-white font-bold text-sm rounded shadow-lg shadow-forge-blue/20 transition-all hidden sm:block">
+          Get the Starter Kit ($27)
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-24 lg:pt-48 lg:pb-32 hero-glow overflow-hidden">
+      <div class="hero-stars"></div>
+
+      <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+        <div class="inline-flex items-center space-x-2 bg-forge-blue/10 border border-forge-blue/20 rounded-full px-4 py-1.5 mb-8">
+          <span class="flex h-2 w-2 rounded-full bg-forge-blue animate-pulse"></span>
+          <span class="text-forge-blue text-xs font-bold uppercase tracking-wide">Screen-Free Family Adventures</span>
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+          They Won't Be Kids Forever.<br>
+          <span class="animate-forge-flow">The Memories Will.</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Trade the mundane for adventure. 30 minutes. No prep. Pure connection.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-4 mb-12 text-sm text-gray-400 font-mono">
+          <div class="flex items-center gap-2 px-3 py-1 bg-white/5 rounded border border-white/5">
+            <span class="text-forge-blue font-bold">✓</span> 30-45 Minutes
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1 bg-white/5 rounded border border-white/5">
+            <span class="text-forge-blue font-bold">✓</span> Ages 4-12
+          </div>
+          <div class="flex items-center gap-2 px-3 py-1 bg-white/5 rounded border border-white/5">
+            <span class="text-forge-blue font-bold">✓</span> Zero Prep
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mb-20">
+          <a href="#offer" class="btn-primary">
+            Start Your Adventure - $27
+          </a>
+        </div>
+
+        <div class="mt-16 max-w-3xl mx-auto relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-forge-blue to-forge-purple rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+          <div class="relative aspect-video bg-forge-card border border-white/10 rounded-2xl flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
+            <div class="text-center p-8 z-10">
+              <svg class="w-16 h-16 mx-auto text-forge-blue/40 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+              </svg>
+              <p class="text-gray-500 font-medium">Family gathered around an adventure</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Problem Section -->
+    <section class="py-24 bg-black border-y border-white/5">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-8">
+          Busy Isn't the Same as Connected
+        </h2>
+        <div class="space-y-6 text-lg text-gray-400 leading-relaxed">
+          <p>
+            You're doing things <em class="text-white not-italic">for</em> them every day. Driving to practice. Helping with homework. Making dinner.
+          </p>
+          <p>
+            But doing things <em class="text-white not-italic">with</em> them? Actually being present in the same moment, creating something together?
+          </p>
+          <p class="text-forge-red">
+            That's what keeps slipping through the cracks.
+          </p>
+          <div class="mt-8 p-6 bg-forge-card border border-forge-blue/20 rounded-xl inline-block">
+            <p class="text-forge-blue font-bold text-xl">
+              What if you could create real adventure memories—without adding another thing to your plate?
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guide Section -->
+    <section class="py-24 relative overflow-hidden">
+      <div class="absolute top-1/4 right-0 w-[500px] h-[500px] bg-forge-blue/5 rounded-full blur-3xl -z-10"></div>
+
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="inline-block px-3 py-1 mb-6 rounded-md bg-forge-blue/10 border border-forge-blue/20 text-forge-blue text-xs font-bold uppercase tracking-wider">The Origin Story</div>
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+            I Built This Because I Was on Autopilot
+          </h2>
+          <div class="space-y-4 text-lg text-gray-400">
+            <p>
+              I'm Tom—a dad who realized I was physically present but mentally checked out.
+            </p>
+            <p>
+              I'd get home from work, go through the motions, and wonder why the days felt so... routine.
+            </p>
+            <p>
+              I wanted magic. I wanted my kids to remember our time together as <strong class="text-white">adventures</strong>, not just activities.
+            </p>
+            <p class="font-bold text-forge-blue pt-4">
+              So I built ParableForge: the storytelling system that turns any parent into their family's adventure guide.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-xl bg-forge-card border border-white/5 hover:border-forge-blue/30 transition duration-300 shadow-2xl relative">
+          <div class="absolute -top-3 -right-3 bg-forge-blue text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-white/20">TESTED</div>
+
+          <h3 class="text-sm font-bold text-forge-blue uppercase tracking-wider mb-6">Why Parents Trust ParableForge</h3>
+
+          <div class="space-y-4">
+            <div class="flex items-start gap-4">
+              <span class="text-forge-blue font-bold">✓</span>
+              <span class="text-gray-300">Tested with real families (not focus groups)</span>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="text-forge-blue font-bold">✓</span>
+              <span class="text-gray-300">Designed for exhausted parents</span>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="text-forge-blue font-bold">✓</span>
+              <span class="text-gray-300">Works for ages 4-12</span>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="text-forge-blue font-bold">✓</span>
+              <span class="text-gray-300">Zero creative ability required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plan Section (Timeline) -->
+    <section id="adventure-trigger" class="relative h-[400vh] bg-forge-dark border-y border-white/5">
+      <div class="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 w-full relative h-[80vh] flex flex-col justify-center">
+
+          <div class="text-center mb-16 shrink-0 relative z-30">
+            <span class="text-forge-blue font-bold tracking-widest uppercase text-xs mb-2 block">The Journey</span>
+            <h2 class="text-4xl md:text-6xl font-black text-white">
+              How to <span class="animate-forge-flow">Forge a Memory</span>
+            </h2>
+          </div>
+
+          <div id="timeline-container" class="relative grid grid-rows-4 h-[600px] w-full">
+
+            <div id="rail-track" class="absolute left-8 md:left-1/2 w-1.5 -ml-[3px] z-0 rounded-full overflow-hidden">
+              <div class="absolute inset-0 bg-forge-card w-full h-full"></div>
+              <div id="progress-fill" class="absolute top-0 left-0 w-full forge-line-gradient h-0 transition-[height] duration-75 linear z-10"></div>
+            </div>
+
+            <div class="relative flex flex-col md:flex-row gap-12 timeline-step group z-20 items-center" data-step="1">
+              <div class="pl-24 md:pl-0 md:w-1/2 md:text-right md:pr-24 text-transition opacity-40 translate-y-4 group-[.active]:opacity-100 group-[.active]:translate-y-0">
+                <div class="inline-flex items-center gap-2 border border-forge-blue/30 bg-blue-900/20 px-3 py-1 text-xs font-bold mb-3 rounded-full text-blue-300">STEP 01</div>
+                <h4 class="font-bold text-2xl text-white mb-2">Choose Your Adventure</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">Select a story from the library. Pirates, Space Explorers, or Medieval Knights? You decide the path.</p>
+              </div>
+
+              <div class="bead absolute left-8 md:left-1/2 -ml-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-forge-dark border-2 border-gray-700 rounded-full overflow-hidden z-20 flex items-center justify-center transition-all duration-300 shadow-xl">
+                <div class="bead-fill absolute inset-0 rounded-full opacity-0 will-change-[opacity]"></div>
+                <i class="fa-solid fa-map-location-dot z-30 relative text-2xl text-gray-600 transition-colors duration-200"></i>
+              </div>
+              <div class="hidden md:block md:w-1/2"></div>
+            </div>
+
+            <div class="relative flex flex-col md:flex-row gap-12 timeline-step group z-20 items-center" data-step="2">
+              <div class="hidden md:block md:w-1/2"></div>
+
+              <div class="bead absolute left-8 md:left-1/2 -ml-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-forge-dark border-2 border-gray-700 rounded-full overflow-hidden z-20 flex items-center justify-center transition-all duration-300 shadow-xl">
+                <div class="bead-fill absolute inset-0 rounded-full opacity-0 will-change-[opacity]"></div>
+                <i class="fa-solid fa-book-open-reader z-30 relative text-2xl text-gray-600 transition-colors duration-200"></i>
+              </div>
+
+              <div class="pl-24 md:pl-24 md:w-1/2 text-left text-transition opacity-40 translate-y-4 group-[.active]:opacity-100 group-[.active]:translate-y-0">
+                <div class="inline-flex items-center gap-2 border border-purple-500/30 bg-purple-900/20 px-3 py-1 text-xs font-bold mb-3 rounded-full text-purple-300">STEP 02</div>
+                <h4 class="font-bold text-2xl text-white mb-2">Set the Stage</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">Read the prompts aloud. The app guides you, but your voice sets the mood. Dim the lights, use a funny accent.</p>
+              </div>
+            </div>
+
+            <div class="relative flex flex-col md:flex-row gap-12 timeline-step group z-20 items-center" data-step="3">
+              <div class="pl-24 md:pl-0 md:w-1/2 md:text-right md:pr-24 text-transition opacity-40 translate-y-4 group-[.active]:opacity-100 group-[.active]:translate-y-0">
+                <div class="inline-flex items-center gap-2 border border-orange-500/30 bg-orange-900/20 px-3 py-1 text-xs font-bold mb-3 rounded-full text-orange-300">STEP 03</div>
+                <h4 class="font-bold text-2xl text-white mb-2">Let Kids be the Heroes</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">When the prompt asks "What do you do?", let them answer. Their imagination drives the plot forward.</p>
+              </div>
+
+              <div class="bead absolute left-8 md:left-1/2 -ml-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-forge-dark border-2 border-gray-700 rounded-full overflow-hidden z-20 flex items-center justify-center transition-all duration-300 shadow-xl">
+                <div class="bead-fill absolute inset-0 rounded-full opacity-0 will-change-[opacity]"></div>
+                <i class="fa-solid fa-shield-halved z-30 relative text-2xl text-gray-600 transition-colors duration-200"></i>
+              </div>
+              <div class="hidden md:block md:w-1/2"></div>
+            </div>
+
+            <div class="relative flex flex-col md:flex-row gap-12 timeline-step group z-20 items-center" data-step="4">
+              <div class="hidden md:block md:w-1/2"></div>
+
+              <div class="bead absolute left-8 md:left-1/2 -ml-8 top-1/2 -translate-y-1/2 w-16 h-16 bg-forge-dark border-2 border-gray-700 rounded-full overflow-hidden z-20 flex items-center justify-center transition-all duration-300 shadow-xl">
+                <div class="bead-fill absolute inset-0 rounded-full opacity-0 will-change-[opacity]"></div>
+                <i class="fa-solid fa-heart z-30 relative text-2xl text-gray-600 transition-colors duration-200"></i>
+              </div>
+
+              <div class="pl-24 md:pl-24 md:w-1/2 text-left text-transition opacity-40 translate-y-4 group-[.active]:opacity-100 group-[.active]:translate-y-0">
+                <div class="inline-flex items-center gap-2 border border-red-500/30 bg-red-900/20 px-3 py-1 text-xs font-bold mb-3 rounded-full text-red-300">THE REWARD</div>
+                <h4 class="font-bold text-2xl text-white mb-2">Forge Lifelong Memories</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">It's not just a story; it's time spent together. No screens, just connection.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Offer Section -->
+    <section id="offer" class="py-24 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-forge-blue/50 to-transparent"></div>
+
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">The Starter Collection</h2>
+          <p class="text-gray-400">Everything you need to run your first family adventures tonight.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
+          <div class="glass-panel rounded-2xl p-8">
+            <h3 class="text-2xl font-bold mb-6 text-forge-gold">What's Included:</h3>
+            <ul class="space-y-6">
+              <li class="flex items-start gap-4">
+                <span class="text-forge-blue font-bold text-xl">✓</span>
+                <div>
+                  <span class="font-bold text-white block">3 Complete Adventures</span>
+                  <p class="text-gray-500 text-sm">6+ hours of family adventure time</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="text-forge-blue font-bold text-xl">✓</span>
+                <div>
+                  <span class="font-bold text-white block">Character Creation Kit</span>
+                  <p class="text-gray-500 text-sm">Kids design their own heroes</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="text-forge-blue font-bold text-xl">✓</span>
+                <div>
+                  <span class="font-bold text-white block">Parent Confidence Guide</span>
+                  <p class="text-gray-500 text-sm">Tips for first-time adventure guides</p>
+                </div>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="text-forge-blue font-bold text-xl">✓</span>
+                <div>
+                  <span class="font-bold text-white block">Access to The Grimoire</span>
+                  <p class="text-gray-500 text-sm">Digital portal with all your resources</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="relative flex flex-col p-8 rounded-2xl bg-forge-card border border-forge-gold/30 shadow-2xl gold-glow group">
+            <div class="absolute top-0 left-0 w-full h-1 bg-forge-gold"></div>
+
+            <div class="mb-6">
+              <div class="text-forge-gold font-bold uppercase tracking-wider text-sm mb-2">One-Time Purchase</div>
+              <div class="flex items-baseline">
+                <span class="text-5xl font-extrabold text-white">$27</span>
+                <span class="text-gray-500 ml-2">/ forever</span>
+              </div>
+            </div>
+
+            <p class="text-gray-400 mb-8">Instant access. Keep the files forever.</p>
+
+            <a href="YOUR_LEMONSQUEEZY_LINK_HERE" class="btn-gold w-full text-center">
+              Buy the Starter Collection
+            </a>
+
+            <p class="text-center text-xs text-gray-500 mt-6">
+              Secure checkout via LemonSqueezy. <br>30-day money-back guarantee.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-black border-t border-white/5">
+      <div class="max-w-3xl mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+          Common Questions
+        </h2>
+        <div class="space-y-4">
+          <details class="group bg-forge-card border border-white/5 rounded-xl overflow-hidden">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none text-white font-medium hover:text-forge-blue transition-colors">
+              I'm not creative. Can I really do this?
+              <span class="transform group-open:rotate-180 transition-transform text-forge-blue">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+              That's exactly why ParableForge exists. Everything is scripted. You're not inventing stories—you're reading prompts and asking "What do you do?" Your kids do all the imagining.
+            </div>
+          </details>
+
+          <details class="group bg-forge-card border border-white/5 rounded-xl overflow-hidden">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none text-white font-medium hover:text-forge-blue transition-colors">
+              How much time does this take?
+              <span class="transform group-open:rotate-180 transition-transform text-forge-blue">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+              Each adventure runs 30-45 minutes. Perfect for after dinner. Zero prep time—just open and start reading.
+            </div>
+          </details>
+
+          <details class="group bg-forge-card border border-white/5 rounded-xl overflow-hidden">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none text-white font-medium hover:text-forge-blue transition-colors">
+              What ages work best?
+              <span class="transform group-open:rotate-180 transition-transform text-forge-blue">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+              Ages 4-12. Younger kids make simple choices; older kids tackle moral dilemmas. Mixed-age siblings work great together.
+            </div>
+          </details>
+
+          <details class="group bg-forge-card border border-white/5 rounded-xl overflow-hidden">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none text-white font-medium hover:text-forge-blue transition-colors">
+              Is this like Dungeons & Dragons?
+              <span class="transform group-open:rotate-180 transition-transform text-forge-blue">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+              Similar magic, zero complexity. No dice mechanics to learn, no character sheets. Just story and choices.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="py-24 bg-black text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="max-w-4xl mx-auto px-6 relative z-10">
+        <h2 class="text-3xl md:text-5xl font-bold text-white mb-6">
+          Their Childhood Won't Wait
+        </h2>
+        <div class="space-y-2 text-lg text-blue-100 mb-10 font-medium">
+          <p>Tonight could be the first adventure.</p>
+          <p>The first time they choose to save the village.</p>
+          <p>The first memory they'll tell their own kids about someday.</p>
+        </div>
+        <a href="#offer" class="px-10 py-5 bg-white text-forge-blue hover:bg-gray-100 font-bold text-xl rounded-lg shadow-2xl transition-all inline-block">
+          Start Your Adventure - $27
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-12 bg-black border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center space-x-2">
+          <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+          <span class="font-bold text-gray-500">ParableForge</span>
+        </div>
+        <div class="flex gap-6 text-sm text-gray-500">
+          <a href="/login" class="hover:text-white transition-colors">Login</a>
+          <a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+        </div>
+      </div>
+      <div class="mt-8 text-center text-sm text-gray-700">
+        &copy; 2025 ParableForge. Forged for adventurous families.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Timeline Animation Script -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const triggerSection = document.getElementById('adventure-trigger');
+      const progressFill = document.getElementById('progress-fill');
+      const railTrack = document.getElementById('rail-track');
+      const timelineContainer = document.getElementById('timeline-container');
+      const steps = document.querySelectorAll('.timeline-step');
+
+      const mapRange = (value, inMin, inMax, outMin, outMax) => {
+        if (value < inMin) return outMin;
+        if (value > inMax) return outMax;
+        return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+      };
+
+      const updateTimeline = () => {
+        if (!triggerSection) return;
+
+        const rect = triggerSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const scrollableDistance = rect.height - windowHeight;
+        const scrolledPixels = -rect.top;
+
+        let percent = (scrolledPixels / scrollableDistance) * 100;
+        percent = Math.max(0, Math.min(100, percent));
+
+        const containerRect = timelineContainer.getBoundingClientRect();
+        const beadCenters = Array.from(steps).map(step => {
+          const bead = step.querySelector('.bead');
+          const beadRect = bead.getBoundingClientRect();
+          return (beadRect.top + (beadRect.height / 2)) - containerRect.top;
+        });
+
+        const firstBeadCenter = beadCenters[0];
+        const lastBeadCenter = beadCenters[beadCenters.length - 1];
+
+        railTrack.style.top = `${firstBeadCenter}px`;
+        railTrack.style.height = `${lastBeadCenter - firstBeadCenter}px`;
+
+        const colorMap = [
+          { hex: '#3b82f6', glow: 'rgba(59, 130, 246, 0.7)' },
+          { hex: '#8b5cf6', glow: 'rgba(139, 92, 246, 0.7)' },
+          { hex: '#f59e0b', glow: 'rgba(245, 158, 11, 0.7)' },
+          { hex: '#ef4444', glow: 'rgba(239, 68, 68, 0.7)' }
+        ];
+
+        let targetPixelHeight = 0;
+        let beadValues = [0, 0, 0, 0];
+
+        if (percent < 15) {
+          targetPixelHeight = 0;
+          beadValues[0] = mapRange(percent, 0, 15, 0, 1);
+        } else if (percent < 30) {
+          beadValues[0] = 1;
+          targetPixelHeight = mapRange(percent, 15, 30, 0, beadCenters[1] - firstBeadCenter);
+        } else if (percent < 45) {
+          beadValues[0] = 1;
+          targetPixelHeight = beadCenters[1] - firstBeadCenter;
+          beadValues[1] = mapRange(percent, 30, 45, 0, 1);
+        } else if (percent < 60) {
+          beadValues[0] = 1; beadValues[1] = 1;
+          targetPixelHeight = mapRange(percent, 45, 60, beadCenters[1] - firstBeadCenter, beadCenters[2] - firstBeadCenter);
+        } else if (percent < 70) {
+          beadValues[0] = 1; beadValues[1] = 1;
+          targetPixelHeight = beadCenters[2] - firstBeadCenter;
+          beadValues[2] = mapRange(percent, 60, 70, 0, 1);
+        } else if (percent < 80) {
+          beadValues[0] = 1; beadValues[1] = 1; beadValues[2] = 1;
+          targetPixelHeight = mapRange(percent, 70, 80, beadCenters[2] - firstBeadCenter, beadCenters[3] - firstBeadCenter);
+        } else if (percent < 90) {
+          beadValues[0] = 1; beadValues[1] = 1; beadValues[2] = 1;
+          targetPixelHeight = beadCenters[3] - firstBeadCenter;
+          beadValues[3] = mapRange(percent, 80, 90, 0, 1);
+        } else {
+          beadValues[0] = 1; beadValues[1] = 1; beadValues[2] = 1; beadValues[3] = 1;
+          targetPixelHeight = beadCenters[3] - firstBeadCenter;
+        }
+
+        progressFill.style.height = `${targetPixelHeight}px`;
+
+        steps.forEach((step, index) => {
+          const bead = step.querySelector('.bead');
+          const fill = step.querySelector('.bead-fill');
+          const icon = step.querySelector('i');
+          const value = beadValues[index];
+          const stepColor = colorMap[index];
+
+          fill.style.opacity = value;
+          fill.style.backgroundColor = stepColor.hex;
+
+          if (value > 0.95) {
+            icon.classList.remove('text-gray-600');
+            icon.classList.add('text-white');
+          } else {
+            icon.classList.add('text-gray-600');
+            icon.classList.remove('text-white');
+          }
+
+          if (value > 0.1) {
+            step.classList.add('active');
+          } else {
+            step.classList.remove('active');
+          }
+
+          if (value >= 0.99) {
+            if (index === 3) {
+              bead.classList.add('white-hot-pulse');
+              bead.style.overflow = 'visible';
+              bead.style.boxShadow = 'none';
+              bead.style.borderColor = '#fff';
+            } else {
+              bead.style.boxShadow = `0 0 0 0 ${stepColor.glow}`;
+              bead.style.borderColor = stepColor.hex;
+              bead.style.animation = 'none';
+              bead.style.transition = 'box-shadow 1s infinite';
+              bead.animate([
+                { boxShadow: `0 0 0 0 ${stepColor.glow}` },
+                { boxShadow: `0 0 0 15px rgba(0,0,0,0)` }
+              ], {
+                duration: 2000,
+                iterations: Infinity
+              });
+            }
+          } else {
+            bead.classList.remove('white-hot-pulse');
+            bead.getAnimations().forEach(anim => anim.cancel());
+            bead.style.overflow = 'hidden';
+            bead.style.borderColor = '#374151';
+            bead.style.boxShadow = 'none';
+          }
+        });
+      };
+
+      window.addEventListener('scroll', updateTimeline, { passive: true });
+      window.addEventListener('resize', updateTimeline, { passive: true });
+
+      setTimeout(updateTimeline, 100);
+    });
+  </script>
+</BaseLayout>
