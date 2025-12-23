@@ -24,7 +24,7 @@ We use the **"Zero-Opex"** stack. Do not suggest AWS, Docker, or paid SaaS unles
 | **Docs/LMS** | **Starlight** | v0.37.x | Used for "The Grimoire" (Adventure Portal). |
 | **Styling** | **Tailwind CSS** | v3.4.x | Mobile-first. No generic CSS files. |
 | **Auth** | **Supabase** | v2.49.x | Client-side auth via `localStorage`. |
-| **CMS** | **Pages CMS** | External | Git-based content management for easy edits. |
+| **CMS** | **Decap CMS** | External | Headless CMS with admin interface. |
 | **Payments** | **Lemon Squeezy** | Placeholder | Handles tax/VAT for digital products. |
 | **Icons** | **Lucide React** | v0.562.x | Consistent, clean SVG icons. |
 | **Hosting** | **GitHub Pages** | - | Must remain static/free. |
@@ -67,7 +67,7 @@ src/
 │   ├── index.astro       # Landing page
 │   ├── login.astro       # Authentication
 │   ├── setup-grimoire.astro  # Post-purchase onboarding
-│   ├── admin.astro       # Pages CMS interface
+│   ├── admin/             # Decap CMS interface (static files)
 │   ├── privacy.astro     # Legal
 │   └── terms.astro       # Legal
 └── styles/
@@ -80,7 +80,7 @@ src/
 |------|---------|
 | `astro.config.mjs` | Astro + Starlight + integrations setup |
 | `tailwind.config.mjs` | Theme colors, custom animations |
-| `public/.pages.yml` | Pages CMS schema for adventures |
+| `public/admin/config.yml` | Decap CMS configuration for adventures & resources |
 | `.github/workflows/deploy.yml` | GitHub Pages deployment |
 | `public/CNAME` | Custom domain config |
 
@@ -112,11 +112,18 @@ import { signUp, signIn, signOut, getUser, getSession } from '../lib/supabase';
 - **Format:** MDX (Markdown + JSX)
 - **Front Matter:** title, description, sidebar.label, sidebar.order
 
-### Pages CMS
-- **Admin Route:** `/admin`
-- **Config:** `public/.pages.yml`
+### Decap CMS
+- **Admin Route:** `/admin` (served from `public/admin/`)
+- **Config:** `public/admin/config.yml`
 - **Media:** `public/images/`
-- **Auto-commits** changes to main branch
+- **Setup:** Ready for Netlify Identity, currently serves static interface
+
+### GitHub-Based Content Management
+- **Current Method:** Direct GitHub file editing and PR workflow
+- **Content Location:** `src/content/docs/grimoire/`
+- **Edit Process:** GitHub web interface → Pull request → GitHub Actions deploy
+- **Benefits:** Zero additional services, integrates with existing workflow
+- **Future Option:** Can migrate to Netlify + Decap CMS for enhanced editing experience
 
 ### Adding New Adventures
 1. Create `.mdx` file in `src/content/docs/grimoire/adventures/`
