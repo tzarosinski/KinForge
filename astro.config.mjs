@@ -11,7 +11,10 @@ export default defineConfig({
     starlight({
       title: 'ParableForge',
       description: 'Screen-free family adventures. Zero prep. Pure connection.',
-      customCss: ['./src/styles/global.css'],
+      customCss: [
+        './src/styles/global.css',
+        './src/styles/starlight-mobile.css'
+      ],
       logo: {
         light: './src/assets/logo-light.svg',
         dark: './src/assets/logo-dark.svg',
@@ -26,15 +29,23 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Resources',
+          autogenerate: { directory: 'grimoire/resources' },
+        },
+        // -----------------------------
+        {
           label: 'Adventures',
           autogenerate: { directory: 'grimoire/adventures' },
         },
+       
       ],
       components: {
         // Custom Head for auth protection on grimoire pages
         Head: './src/components/starlight/Head.astro',
         // Custom Header with Health Tracker for adventures
         Header: './src/components/starlight/Header.astro',
+        // Custom Mobile Table of Contents with improved positioning
+        MobileTableOfContents: './src/components/starlight/MobileTableOfContents.astro',
       },
       // Disable default Starlight homepage to use custom landing page
       disable404Route: false,

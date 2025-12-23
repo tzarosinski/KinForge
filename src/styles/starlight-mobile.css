@@ -1,0 +1,197 @@
+/* ParableForge Starlight Mobile Enhancements
+   This file provides additional mobile-specific styling for Starlight pages
+   following the "Teleprompter" mode described in the coding standards. 
+*/
+
+/* Mobile-First Variables Overrides */
+@media (max-width: 50rem) {
+  :root {
+    /* Increase base font size for better readability on small screens */
+    --sl-text-base: 1.05rem;
+    
+    /* Increase line height for better readability */
+    --sl-line-height: 1.7;
+    
+    /* Reduce content width to match screen size better */
+    --sl-content-width: 100%;
+    --sl-content-padding: 1rem;
+    
+    /* Increase spacing between headings for better visual hierarchy */
+    --sl-content-margin: 1.75rem 0;
+  }
+  
+  /* Make headings more prominent on mobile */
+  .content h1 {
+    font-size: var(--sl-text-4xl) !important;
+    margin-bottom: 1.25rem !important;
+  }
+  
+  .content h2 {
+    font-size: var(--sl-text-2xl) !important;
+    margin-top: 2.25rem !important;
+  }
+  
+  .content h3 {
+    font-size: var(--sl-text-xl) !important;
+  }
+  
+  /* Improve code readability */
+  .content pre {
+    padding: 0.75rem !important;
+    font-size: 0.85rem !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Increase touch target sizes for better mobile experience */
+  .content a, 
+  .content button,
+  .nav-link,
+  .sidebar-content a,
+  .sl-badge {
+    padding: 0.4em 0 !important;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* Better spacing for list items */
+  .content ul,
+  .content ol {
+    padding-left: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .content li {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Implement "Teleprompter" mode for mobile - hide sidebars, focus on content */
+  /* Ensure sidebar menu is initially hidden on mobile */
+  [data-has-sidebar]:not([data-sidebar-open]) {
+    grid-template-columns: 1fr !important;
+    --sl-sidebar-width: 0 !important;
+  }
+  
+  /* Make sidebar open button more prominent */
+  button[aria-expanded][aria-label="Open menu"] {
+    background-color: rgba(var(--sl-color-accent-high), 0.1);
+    border-radius: 0.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Enhance content visibility when no sidebars are shown */
+  main {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* Improve responsive tables */
+  .content table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Add fade indicator for scrollable tables */
+  .content .table-container {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .content .table-container::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, transparent, var(--sl-color-bg));
+    pointer-events: none;
+    opacity: 0.8;
+  }
+}
+
+/* Fix spacing for adjacent elements on mobile */
+@media (max-width: 50rem) {
+  .content > * + * {
+    margin-top: 1.25rem !important;
+  }
+  
+  /* Adjust padding on nested components for better spacing */
+  .content .card {
+    padding: 1rem !important;
+  }
+  
+  /* Make code blocks full-width on mobile */
+  .content pre {
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    border-radius: 0 !important;
+    width: calc(100% + 2rem);
+  }
+  
+  /* Ensure images don't overflow */
+  .content img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Extra Small Devices - Specific Teleprompter Mode */
+@media (max-width: 37.75rem) {
+  /* Implement "Teleprompter" mode for mobile - hide sidebars, focus on content */
+  /* Ensure sidebar menu is initially hidden on mobile */
+  [data-has-sidebar]:not([data-sidebar-open]) {
+    grid-template-columns: 1fr !important;
+    --sl-sidebar-width: 0 !important;
+  }
+  
+  /* Make sidebar open button more prominent */
+  button[aria-expanded][aria-label="Open menu"] {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 0.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Enhance content visibility when no sidebars are shown */
+  main {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  /* Improve responsive tables */
+  .content table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Add fade indicator for scrollable tables */
+  .content .table-container {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .content .table-container::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, transparent, var(--sl-color-bg));
+    pointer-events: none;
+    opacity: 0.8;
+  }
+}// Fixed nested media queries to improve mobile Teleprompter mode

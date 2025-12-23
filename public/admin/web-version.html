@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pages CMS - Web Version</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 0 20px;
+    }
+    
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    p {
+      margin-bottom: 30px;
+      max-width: 600px;
+      line-height: 1.5;
+      color: #666;
+    }
+    
+    .button {
+      display: inline-block;
+      background-color: #4a6ee0;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-bottom: 20px;
+      transition: background-color 0.3s;
+    }
+    
+    .button:hover {
+      background-color: #3b5bd1;
+    }
+    
+    .note {
+      font-size: 0.9em;
+      color: #888;
+      margin-top: 30px;
+      max-width: 600px;
+    }
+    
+    .steps {
+      text-align: left;
+      max-width: 600px;
+      margin-top: 30px;
+      border: 1px solid #eee;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    
+    .steps h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+    
+    .steps ol {
+      padding-left: 20px;
+    }
+    
+    .steps li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ParableForge Content Manager</h1>
+    
+    <p>
+      The local Pages CMS integration is currently experiencing issues. Instead, you can use the official Pages CMS web application to manage your content.
+    </p>
+    
+    <a href="https://app.pagescms.org" target="_blank" class="button">
+      Open Pages CMS Web App
+    </a>
+    
+    <div class="steps">
+      <h2>How to use the web version:</h2>
+      
+      <ol>
+        <li>Click the button above to open the Pages CMS web app</li>
+        <li>Sign in with your GitHub account when prompted</li>
+        <li>Add your repository (ParableForge) if it's not already connected</li>
+        <li>The web app will automatically detect your .pages.yml configuration</li>
+        <li>You can now edit your adventure content through the web interface</li>
+      </ol>
+    </div>
+    
+    <p class="note">
+      Note: Changes made through the web app will create commits directly to your GitHub repository. 
+      After making changes, you'll need to pull the updates to your local repository.
+    </p>
+  </div>
+</body>
+</html>
