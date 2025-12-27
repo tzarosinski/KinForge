@@ -1,15 +1,15 @@
 ---
 // Custom Head component for Starlight
-// Injects auth check script for protected /grimoire pages
+// Injects auth check script for protected /compendium pages
 import type { Props } from '@astrojs/starlight/props';
 import Default from '@astrojs/starlight/components/Head.astro';
 
-const isGrimoirePage = Astro.url.pathname.startsWith('/grimoire');
+const isCompendiumPage = Astro.url.pathname.startsWith('/compendium');
 ---
 
 <Default {...Astro.props}><slot /></Default>
 
-{isGrimoirePage && (
+{isCompendiumPage && (
   <script is:inline>
     // Auth guard for Grimoire pages
     (async function() {

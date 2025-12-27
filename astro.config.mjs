@@ -23,26 +23,26 @@ export default defineConfig({
       social: [],
       sidebar: [
         {
-          label: 'The Grimoire',
+          label: 'The Compendium',
           items: [
-            { label: 'Welcome', slug: 'grimoire/welcome' },
+            { label: 'Welcome', slug: 'compendium/welcome' },
           ],
         },
         {
           label: 'Resources',
-          autogenerate: { directory: 'grimoire/resources' },
+          autogenerate: { directory: 'compendium/resources' },
         },
         // -----------------------------
         {
           label: 'Adventures',
-          autogenerate: { directory: 'grimoire/adventures' },
+          autogenerate: { directory: 'compendium/adventures' },
         },
        
       ],
       components: {
         // Custom SiteTitle with larger icon and animated text
         SiteTitle: './src/components/starlight/SiteTitle.astro',
-        // Custom Head for auth protection on grimoire pages
+        // Custom Head for auth protection on compendium pages
         Head: './src/components/starlight/Head.astro',
         // Custom Header with Health Tracker for adventures
         Header: './src/components/starlight/Header.astro',

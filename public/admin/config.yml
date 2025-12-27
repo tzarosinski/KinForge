@@ -14,7 +14,7 @@ public_folder: "/images"
 collections:
   - name: "adventures"
     label: "Adventures"
-    folder: "src/content/docs/grimoire/adventures"
+    folder: "src/content/docs/compendium/adventures"
     create: true
     slug: "{{slug}}"
     extension: "mdx"
@@ -31,7 +31,7 @@ collections:
       - { label: "Body", name: "body", widget: "markdown" }
   - name: "resources"
     label: "Resources"
-    folder: "src/content/docs/grimoire/resources"
+    folder: "src/content/docs/compendium/resources"
     create: true
     slug: "{{slug}}"
     extension: "mdx"

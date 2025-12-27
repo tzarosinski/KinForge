@@ -1,0 +1,8 @@
+# Netlify Redirects for Backward Compatibility
+# This file provides redirects from old grimoire URLs to new compendium URLs
+
+# Grimoire to Compendium redirects
+/grimoire/* /compendium/:splat 301
+
+# Setup page redirect
+/setup-grimoire /setup-compendium 301
