@@ -18,7 +18,7 @@ export default defineConfig({
       logo: {
         light: './src/assets/logo-light.svg',
         dark: './src/assets/logo-dark.svg',
-        replacesTitle: true,
+        replacesTitle: false,
       },
       social: [],
       sidebar: [
@@ -40,6 +40,8 @@ export default defineConfig({
        
       ],
       components: {
+        // Custom SiteTitle with larger icon and animated text
+        SiteTitle: './src/components/starlight/SiteTitle.astro',
         // Custom Head for auth protection on grimoire pages
         Head: './src/components/starlight/Head.astro',
         // Custom Header with Health Tracker for adventures

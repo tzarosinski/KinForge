@@ -1,0 +1,54 @@
+---
+// Custom SiteTitle with larger icon and animated text
+---
+
+<style>
+  .site-title-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .site-title-custom:hover {
+    opacity: 0.9;
+  }
+  .site-title-custom svg {
+    width: 2rem;
+    height: 2rem;
+    color: #3B82F6;
+    transition: color 0.2s;
+  }
+  .site-title-custom:hover svg {
+    color: #ffffff;
+  }
+  .site-title-text {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    background-image: linear-gradient(
+      to right,
+      var(--forge-blue, #3B82F6) 0%,
+      var(--forge-purple, #8B5CF6) 25%,
+      var(--forge-gold, #F59E0B) 50%,
+      var(--forge-red, #EF4444) 75%,
+      var(--forge-blue, #3B82F6) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: magma-flow 4s linear infinite;
+  }
+  @keyframes magma-flow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+</style>
+
+<a href="/" class="site-title-custom" aria-label="ParableForge">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+  </svg>
+  <span class="site-title-text" translate="no">ParableForge</span>
+</a>
