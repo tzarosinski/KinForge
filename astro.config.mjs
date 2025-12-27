@@ -44,9 +44,15 @@ export default defineConfig({
         SiteTitle: './src/components/starlight/SiteTitle.astro',
         // Custom Head for auth protection on compendium pages
         Head: './src/components/starlight/Head.astro',
-        // Custom Header with Health Tracker for adventures
+        // Custom Header
         Header: './src/components/starlight/Header.astro',
-        // Custom Mobile Table of Contents with improved positioning
+        // Custom PageFrame with Health Tracker (renders once per page)
+        PageFrame: './src/components/starlight/PageFrame.astro',
+        // Custom Content Panel
+        ContentPanel: './src/components/starlight/ContentPanel.astro',
+        // Disabled desktop "On This Page" sidebar to prevent overlap with health tracker
+        TableOfContents: './src/components/starlight/TableOfContents.astro',
+        // Custom Mobile Table of Contents (currently hidden)
         MobileTableOfContents: './src/components/starlight/MobileTableOfContents.astro',
       },
       // Disable default Starlight homepage to use custom landing page

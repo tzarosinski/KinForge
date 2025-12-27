@@ -1,10 +1,12 @@
 ---
+// Hidden for now - can be useful in the right UI
 // Simplify the component to not rely on Starlight's TableOfContentsList
 const { toc } = Astro.locals.starlightRoute;
+const isHidden = true; // Set to false to re-enable
 ---
 
 {
-	toc && (
+	toc && !isHidden && (
 		<mobile-starlight-toc data-min-h={toc.minHeadingLevel} data-max-h={toc.maxHeadingLevel}>
 			<nav aria-labelledby="starlight__on-this-page--mobile">
 				<details id="starlight__mobile-toc">

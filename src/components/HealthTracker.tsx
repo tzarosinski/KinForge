@@ -150,8 +150,8 @@ export default function HealthTracker({
 
   return (
     <>
-      {/* Health Tracker - Sticky in content corner */}
-      <div className="sticky top-4 float-right ml-4 mb-4 z-40 clear-right">
+      {/* Health Tracker - Positioning handled by parent PageFrame container */}
+      <div className="relative">
         {/* Closed State - Heart Button */}
         {!isOpen && (
           <button

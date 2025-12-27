@@ -1,0 +1,7 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/ContentPanel.astro';
+// HealthTracker removed - now handled by PageFrame.astro to prevent duplication
+---
+
+<Default {...Astro.props}><slot /></Default>
