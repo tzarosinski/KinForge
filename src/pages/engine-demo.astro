@@ -1,0 +1,328 @@
+---
+/**
+ * ENGINE DEMO PAGE
+ * 
+ * This is the "Component Laboratory" - a public showcase of the Sovereign Engine.
+ * 
+ * Purpose:
+ * 1. Sales demo for potential StackForge buyers
+ * 2. Interactive documentation for developers
+ * 3. Testing ground for new features
+ * 
+ * Shows both use cases:
+ * - Adventure Mode (HP, combat, narrative)
+ * - Course Mode (XP, lessons, progress tracking)
+ * 
+ * Each section has modifier buttons so visitors can click and see effects in real-time.
+ */
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResourceCard from '../lib/engine/components/ResourceCard';
+import TurnQueue from '../lib/engine/components/TurnQueue';
+import EngineDirector from '../lib/engine/components/EngineDirector';
+import SurgeOverlay from '../lib/engine/components/SurgeOverlay';
+import ModifierButton from '../lib/engine/components/ModifierButton';
+import { Toaster } from 'sonner';
+
+// MOCK DATA: Adventure Mode (Goblin Fight)
+const adventureResources = [
+  {
+    id: 'player_hp',
+    label: 'Your Health',
+    max: 20,
+    initial: 20,
+    theme: 'red' as const,
+    style: 'bar' as const,
+    icon: 'Heart'
+  },
+  {
+    id: 'goblin_hp',
+    label: 'Goblin Health',
+    max: 15,
+    initial: 15,
+    theme: 'purple' as const,
+    style: 'counter' as const,
+    icon: 'Skull'
+  },
+  {
+    id: 'courage',
+    label: 'Courage Points',
+    max: 100,
+    initial: 0,
+    theme: 'gold' as const,
+    style: 'bar' as const,
+    icon: 'Star'
+  }
+];
+
+const adventureRules = [
+  {
+    targetId: 'goblin_hp',
+    operator: '<=' as const,
+    threshold: 0,
+    action: 'confetti' as const,
+    payload: 'Victory! The goblin flees into the forest!'
+  },
+  {
+    targetId: 'player_hp',
+    operator: '<=' as const,
+    threshold: 5,
+    action: 'shake' as const,
+    payload: ''
+  },
+  {
+    targetId: 'courage',
+    operator: '>=' as const,
+    threshold: 50,
+    action: 'toast' as const,
+    payload: 'Your courage inspires your allies!'
+  }
+];
+
+const adventureSurges = [
+  {
+    triggerTurn: 3,
+    dialogue: 'The goblin drinks a potion! His eyes glow red with fury!',
+    forceFirst: true,
+    animation: 'flash' as const,
+    modifyResources: [
+      { resourceId: 'goblin_hp', delta: 5 }
+    ]
+  }
+];
+
+// MOCK DATA: Course Mode (Learning Progress)
+const courseResources = [
+  {
+    id: 'xp',
+    label: 'Experience Points',
+    max: 1000,
+    initial: 0,
+    theme: 'green' as const,
+    style: 'bar' as const,
+    icon: 'Zap'
+  },
+  {
+    id: 'lessons_completed',
+    label: 'Lessons Completed',
+    max: 10,
+    initial: 0,
+    theme: 'blue' as const,
+    style: 'counter' as const,
+    icon: 'BookOpen'
+  },
+  {
+    id: 'streak',
+    label: 'Day Streak',
+    max: 30,
+    initial: 0,
+    theme: 'gold' as const,
+    style: 'counter' as const,
+    icon: 'Flame'
+  }
+];
+
+const courseRules = [
+  {
+    targetId: 'xp',
+    operator: '>=' as const,
+    threshold: 250,
+    action: 'toast' as const,
+    payload: '🎉 Level 2 Unlocked!'
+  },
+  {
+    targetId: 'xp',
+    operator: '>=' as const,
+    threshold: 1000,
+    action: 'confetti' as const,
+    payload: 'Course Complete!'
+  },
+  {
+    targetId: 'lessons_completed',
+    operator: '>=' as const,
+    threshold: 5,
+    action: 'unlock' as const,
+    payload: 'Bonus Module: Advanced Tactics'
+  }
+];
+---
+
+<BaseLayout title="Sovereign Engine Demo" description="Testing adventure & course modes">
+  <Toaster client:only="react" position="top-center" />
+  
+  <div class="min-h-screen bg-forge-dark text-white p-8">
+    <!-- Marketing Banner -->
+    <div class="bg-gradient-to-r from-forge-blue to-forge-purple p-6 rounded-xl text-center mb-8 border-2 border-white/20">
+      <h2 class="text-2xl font-bold text-white mb-2">
+        ⚙️ StackForge Sovereign Engine
+      </h2>
+      <p class="text-slate-200 max-w-2xl mx-auto text-sm">
+        This is a live demo of the reusable React components included in the StackForge Starter Kit. 
+        Same engine powers adventures, courses, habit trackers, and more.
+      </p>
+      <div class="mt-4 flex gap-4 justify-center flex-wrap">
+        <a 
+          href="/adventure/sky-island" 
+          class="px-6 py-2 bg-white text-forge-blue rounded-lg font-semibold hover:bg-slate-100 transition-all"
+        >
+          See It In Action
+        </a>
+        <a 
+          href="https://stackforge.com" 
+          class="px-6 py-2 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-forge-blue transition-all"
+        >
+          Get The Kit
+        </a>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-5xl font-bold mb-2 animate-forge-flow">Sovereign Engine Demo</h1>
+      <p class="text-slate-400 mb-12">
+        Same engine. Two use cases. Zero compromise.
+      </p>
+      
+      <!-- SPLIT VIEW -->
+      <div class="grid lg:grid-cols-2 gap-8">
+        
+        <!-- LEFT: ADVENTURE MODE -->
+        <div class="glass-panel p-6">
+          <h2 class="text-2xl font-bold mb-4 text-forge-gold">Adventure Mode</h2>
+          <p class="text-sm text-slate-400 mb-6">
+            Turn-based combat with dynamic surge events
+          </p>
+          
+          <EngineDirector 
+            client:only="react" 
+            rules={adventureRules}
+            surges={adventureSurges}
+          />
+          <SurgeOverlay client:only="react" />
+          
+          <div class="space-y-4 mb-6">
+            <TurnQueue client:only="react" maxTurns={10} />
+            
+            {adventureResources.map(resource => (
+              <ResourceCard client:only="react" resource={resource} />
+            ))}
+          </div>
+          
+          <div class="border-t border-slate-700 pt-4">
+            <p class="text-xs text-slate-500 mb-3 uppercase tracking-wide">Test Controls</p>
+            <div class="flex flex-wrap gap-2">
+              <ModifierButton 
+                client:only="react"
+                resourceId="player_hp"
+                delta={-3}
+                max={20}
+                label="Take Damage"
+              />
+              <ModifierButton 
+                client:only="react"
+                resourceId="goblin_hp"
+                delta={-5}
+                max={15}
+                label="Attack Goblin"
+              />
+              <ModifierButton 
+                client:only="react"
+                resourceId="courage"
+                delta={25}
+                max={100}
+                label="Brave Action"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <!-- RIGHT: COURSE MODE -->
+        <div class="glass-panel p-6">
+          <h2 class="text-2xl font-bold mb-4 text-forge-blue">Course Mode</h2>
+          <p class="text-sm text-slate-400 mb-6">
+            Student progress tracking with milestone rewards
+          </p>
+          
+          <EngineDirector 
+            client:only="react" 
+            rules={courseRules}
+            surges={[]}
+          />
+          
+          <div class="space-y-4 mb-6">
+            {courseResources.map(resource => (
+              <ResourceCard client:only="react" resource={resource} />
+            ))}
+          </div>
+          
+          <div class="border-t border-slate-700 pt-4">
+            <p class="text-xs text-slate-500 mb-3 uppercase tracking-wide">Test Controls</p>
+            <div class="flex flex-wrap gap-2">
+              <ModifierButton 
+                client:only="react"
+                resourceId="xp"
+                delta={100}
+                max={1000}
+                label="Complete Lesson"
+              />
+              <ModifierButton 
+                client:only="react"
+                resourceId="lessons_completed"
+                delta={1}
+                max={10}
+                label="Finish Lesson"
+              />
+              <ModifierButton 
+                client:only="react"
+                resourceId="streak"
+                delta={1}
+                max={30}
+                label="Daily Login"
+              />
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- BOTTOM: CODE SNIPPET (The Pitch) -->
+      <div class="mt-12 glass-panel p-6 border-2 border-forge-gold">
+        <h3 class="text-xl font-bold mb-4">The Sovereign Engine Promise</h3>
+        <div class="grid md:grid-cols-3 gap-6 text-sm">
+          <div>
+            <div class="text-forge-blue font-bold mb-2">One Codebase</div>
+            <p class="text-slate-400">
+              Whether you're building a game, course, or habit tracker—same engine.
+            </p>
+          </div>
+          <div>
+            <div class="text-forge-purple font-bold mb-2">Zero Dependencies</div>
+            <p class="text-slate-400">
+              No Firebase. No Supabase billing. Just local state + localStorage.
+            </p>
+          </div>
+          <div>
+            <div class="text-forge-gold font-bold mb-2">100% Yours</div>
+            <p class="text-slate-400">
+              No API keys. No vendor lock-in. Copy the /engine folder and go.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Initialize engines on page load
+  import { initEngine } from '../lib/engine/store';
+  import type { Resource } from '../lib/engine/types';
+  
+  const adventureResources: Resource[] = [
+    { id: 'player_hp', label: 'Your Health', max: 20, initial: 20, theme: 'red', style: 'bar', icon: 'Heart' },
+    { id: 'goblin_hp', label: 'Goblin Health', max: 15, initial: 15, theme: 'purple', style: 'counter', icon: 'Skull' },
+    { id: 'courage', label: 'Courage Points', max: 100, initial: 0, theme: 'gold', style: 'bar', icon: 'Star' }
+  ];
+  
+  // Initialize adventure mode engine
+  initEngine('demo-adventure', adventureResources);
+</script>

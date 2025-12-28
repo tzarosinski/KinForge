@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DirectorDrawer from '../lib/engine/components/DirectorDrawer';
+
+const testResources = [
+  {
+    id: 'hp',
+    label: 'Test HP',
+    max: 100,
+    initial: 50,
+    theme: 'red' as const,
+    style: 'bar' as const,
+  }
+];
+---
+
+<BaseLayout title="Drawer Test" description="Testing DirectorDrawer">
+  <div class="min-h-screen bg-forge-dark p-8">
+    <h1 class="text-white text-3xl mb-4">Drawer Test Page</h1>
+    <p class="text-slate-300 mb-8">This page tests if DirectorDrawer renders at all.</p>
+    
+    <DirectorDrawer 
+      client:only="react"
+      resources={testResources}
+      combatants={[]}
+    />
+  </div>
+</BaseLayout>

@@ -1,0 +1,13 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "devCommand": "npm run dev",
+  "framework": "astro",
+  "regions": ["iad1"],
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/keystatic"
+    }
+  ]
+}

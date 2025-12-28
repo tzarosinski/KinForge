@@ -1,0 +1,32 @@
+---
+title: Sky Island
+description: An adventure to the mysterious island in the sky
+duration: '30'
+difficulty: beginner
+resources:
+  - id: trust
+    label: Grandmother Cloud's Trust
+    max: 100
+    initial: 10
+    theme: blue
+    style: bar
+    icon: Zap
+rules:
+  - targetId: trust
+    operator: '>='
+    threshold: 20
+    action: toast
+    payload: the clouds part, you see a path forward!
+surges:
+  - triggerTurn: 3
+    dialogue: >-
+      A strong wind blows, Grandmother Cloud suddenly appears and is being nosey
+      and she demands respect!
+    forceFirst: true
+    animation: shake
+    modifyResources:
+      - resourceId: trust
+        delta: 20
+turns: []
+---
+The party approaches the tavern, it's rainy out. warm light spilled out of the windows and each time the door swung open, the boisterous and mostly happy sounds came flooding out.
