@@ -1,0 +1,28 @@
+---
+/**
+ * STARLIGHT PAGE TITLE OVERRIDE
+ * 
+ * Extends Starlight's default PageTitle component to inject
+ * the PlayAdventureButton on adventure documentation pages.
+ * 
+ * Flow:
+ * 1. Render default Starlight page title
+ * 2. Check if we're on an adventure docs page
+ * 3. If yes, inject PlayAdventureButton below title
+ * 
+ * This override is registered in astro.config.mjs
+ */
+
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+import PlayAdventureButton from './PlayAdventureButton.astro';
+
+// Check if we're on an adventure documentation page
+const isAdventurePage = Astro.url.pathname.includes('/compendium/adventures/');
+---
+
+<!-- Render default Starlight title -->
+<Default {...Astro.props}><slot /></Default>
+
+<!-- Inject Play button if on adventure page -->
+{isAdventurePage && <PlayAdventureButton />}

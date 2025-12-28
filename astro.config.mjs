@@ -3,11 +3,19 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
+import markdoc from '@astrojs/markdoc';
+import keystatic from '@keystatic/astro';
+import vercel from '@astrojs/vercel/serverless';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://playparableforge.com',
+  output: 'server',
+  adapter: vercel({
+    webAnalytics: { enabled: false }
+  }),
   integrations: [
+    markdoc(),
     starlight({
       title: 'ParableForge',
       description: 'Screen-free family adventures. Zero prep. Pure connection.',
@@ -54,6 +62,8 @@ export default defineConfig({
         TableOfContents: './src/components/starlight/TableOfContents.astro',
         // Custom Mobile Table of Contents (currently hidden)
         MobileTableOfContents: './src/components/starlight/MobileTableOfContents.astro',
+        // Custom PageTitle to inject PlayAdventureButton on adventure docs
+        PageTitle: './src/components/starlight/PageTitle.astro',
       },
       // Disable default Starlight homepage to use custom landing page
       disable404Route: false,
@@ -62,5 +72,6 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     react(),
+    keystatic(),
   ],
 });
