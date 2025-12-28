@@ -1,0 +1,127 @@
+---
+/**
+ * ADVENTURE LAYOUT - Mobile-First Director Dashboard
+ * 
+ * The main layout for adventure pages (/adventure/[slug]).
+ * This is where the Sovereign Engine comes to life.
+ * 
+ * Layout structure:
+ * - Desktop: Split screen (content left, drawer right as fixed sidebar)
+ * - Mobile: Full-screen content with collapsible drawer at bottom
+ * 
+ * Engine components are injected here and work together:
+ * - GameInitializer: Sets up engine state on mount
+ * - EngineDirector: Watches state, fires rules (invisible)
+ * - SurgeOverlay: Full-screen interrupts (shows when triggered)
+ * - DirectorDrawer: Mobile-first control panel
+ * - DraggableQueue: Combatant turn order (if combatants present)
+ * - ResourceCard: Visual display of each tracked resource
+ * 
+ * All React components use client:only="react" to avoid hydration issues.
+ */
+
+import BaseLayout from './BaseLayout.astro';
+import GameInitializer from '../lib/engine/components/GameInitializer';
+import EngineDirector from '../lib/engine/components/EngineDirector';
+import SurgeOverlay from '../lib/engine/components/SurgeOverlay';
+import DirectorDrawer from '../lib/engine/components/DirectorDrawer';
+import SmartDrawerController from '../lib/engine/components/SmartDrawerController';
+import ErrorBoundary from '../components/ErrorBoundary';
+import { Toaster } from 'sonner';
+import type { Resource, Rule, SurgeEvent } from '../lib/engine/types';
+
+interface Combatant {
+  id: string;
+  name: string;
+  avatar: string;
+  type: 'hero' | 'enemy' | 'ally';
+  linkedResource?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  resources: Resource[];
+  rules: Rule[];
+  surges: SurgeEvent[];
+  combatants?: Combatant[];
+  maxTurns?: number;
+}
+
+const { title, description, resources, rules, surges, combatants = [], maxTurns } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Engine Initialization -->
+  <ErrorBoundary client:only="react">
+    <GameInitializer 
+      client:only="react"
+      adventureSlug={Astro.params.slug || 'demo'}
+      resources={resources}
+      rules={rules}
+      combatants={combatants}
+    />
+  </ErrorBoundary>
+  
+  <!-- Engine Components (client-side only) -->
+  <ErrorBoundary client:only="react">
+    <EngineDirector 
+      client:only="react" 
+      rules={rules} 
+      surges={surges}
+    />
+  </ErrorBoundary>
+  
+  <ErrorBoundary client:only="react">
+    <SurgeOverlay client:only="react" />
+  </ErrorBoundary>
+  
+  <ErrorBoundary client:only="react">
+    <SmartDrawerController client:only="react" />
+  </ErrorBoundary>
+  
+  <Toaster client:only="react" position="top-center" />
+  
+  <div class="min-h-screen bg-forge-dark flex flex-col md:flex-row">
+    <!-- Main content area (scrollable) -->
+    <main class="flex-1 p-6 pb-40 md:pb-6 md:h-screen md:overflow-y-auto">
+      <div class="max-w-prose mx-auto">
+        <div class="prose prose-invert prose-forge">
+          <h1 class="text-4xl font-bold mb-4 animate-forge-flow">{title}</h1>
+          <p class="text-slate-300 mb-8">{description}</p>
+          <slot />
+        </div>
+      </div>
+    </main>
+    
+    <!-- Director Drawer (mobile: sticky footer, desktop: sidebar) -->
+    <ErrorBoundary client:only="react">
+      <DirectorDrawer 
+        client:only="react"
+        resources={resources}
+        combatants={combatants}
+        maxTurns={maxTurns}
+      />
+    </ErrorBoundary>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Custom prose styles for adventure content */
+  .prose-forge {
+    --tw-prose-body: theme('colors.slate.200');
+    --tw-prose-headings: theme('colors.white');
+    --tw-prose-quotes: theme('colors.yellow.100');
+    --tw-prose-quote-borders: theme('colors.yellow.500');
+    --tw-prose-code: theme('colors.blue.300');
+  }
+  
+  .prose-forge blockquote {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    border-left: 4px solid var(--forge-gold);
+    background: rgba(245, 158, 11, 0.1);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+</style>

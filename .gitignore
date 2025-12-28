@@ -21,3 +21,6 @@ pnpm-debug.log*
 # temporary files
 C:*
 .astro/
+
+# Vercel deployment output
+.vercel/

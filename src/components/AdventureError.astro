@@ -1,0 +1,148 @@
+---
+/**
+ * ADVENTURE ERROR COMPONENT
+ * 
+ * Displays a friendly error message when adventure content fails to load.
+ * Provides clear actions for recovery without showing technical jargon.
+ * 
+ * Usage:
+ * <AdventureError 
+ *   error={errorObject} 
+ *   adventureName="Sky Island"
+ *   showSafeMode={true}
+ * />
+ * 
+ * Design: Glass panel with warning yellow accent (not aggressive red)
+ */
+
+interface Props {
+  error?: Error | any;
+  adventureName: string;
+  showSafeMode?: boolean;
+}
+
+const { error, adventureName, showSafeMode = true } = Astro.props;
+
+// Extract simple error message (hide technical stack traces)
+const errorMessage = error?.message || 'Content could not be loaded';
+const isDevelopment = import.meta.env.DEV;
+---
+
+<div class="my-8 max-w-2xl mx-auto">
+  <div class="glass-panel p-8 border-2 border-yellow-500/30">
+    <!-- Warning Icon -->
+    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-yellow-500/10 flex items-center justify-center">
+      <svg 
+        class="w-8 h-8 text-yellow-500" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        <path 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          stroke-width="2" 
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+        />
+      </svg>
+    </div>
+
+    <!-- Main Message -->
+    <h2 class="text-2xl font-bold text-white text-center mb-3">
+      Adventure Content Temporarily Unavailable
+    </h2>
+
+    <p class="text-slate-300 text-center mb-2">
+      We're having trouble loading the <strong class="text-white">{adventureName}</strong> adventure script.
+    </p>
+
+    <p class="text-slate-400 text-sm text-center mb-6">
+      Don't worry - your progress is saved and the adventure controls are still available.
+    </p>
+
+    <!-- Error Details (Development Only) -->
+    {isDevelopment && error && (
+      <details class="mb-6 bg-slate-900/50 rounded p-4">
+        <summary class="text-slate-400 text-xs cursor-pointer hover:text-slate-300 font-mono">
+          🔧 Developer Info (visible in dev mode only)
+        </summary>
+        <div class="mt-3 space-y-2">
+          <p class="text-xs text-yellow-400">
+            <strong>Error:</strong> {errorMessage}
+          </p>
+          {error.stack && (
+            <pre class="text-xs text-slate-500 overflow-x-auto max-h-40">
+              {error.stack}
+            </pre>
+          )}
+        </div>
+      </details>
+    )}
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <button
+        onclick="window.location.reload()"
+        class="px-6 py-3 bg-forge-blue hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+      >
+        <span>🔄</span>
+        <span>Reload Page</span>
+      </button>
+
+      {showSafeMode && (
+        <button
+          id="safe-mode-btn"
+          class="px-6 py-3 border-2 border-forge-gold text-forge-gold hover:bg-forge-gold hover:text-forge-dark rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+        >
+          <span>🛡️</span>
+          <span>Continue in Safe Mode</span>
+        </button>
+      )}
+
+      <a
+        href="/compendium/welcome"
+        class="px-6 py-3 border-2 border-slate-600 text-slate-300 hover:border-slate-400 hover:text-white rounded-lg font-semibold transition-all flex items-center justify-center gap-2"
+      >
+        <span>←</span>
+        <span>Back to Compendium</span>
+      </a>
+    </div>
+
+    <!-- Helpful Tip -->
+    <div class="mt-6 pt-6 border-t border-slate-700">
+      <p class="text-slate-400 text-sm text-center">
+        💡 <strong class="text-slate-300">Tip:</strong> If this persists, try clearing your browser cache or contact support.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Safe Mode button handler
+  const safeModeBtn = document.getElementById('safe-mode-btn');
+  if (safeModeBtn) {
+    safeModeBtn.addEventListener('click', () => {
+      // Set flag in sessionStorage to trigger fallback renderer
+      sessionStorage.setItem('pf-safe-mode', 'true');
+      window.location.reload();
+    });
+  }
+</script>
+
+<style>
+  /* Smooth entrance animation */
+  .glass-panel {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
