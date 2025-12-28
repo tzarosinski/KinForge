@@ -1,0 +1,30 @@
+{
+    "output": {
+      "style": "markdown",
+      "filePath": "stackforge_audit.md"
+    },
+    "ignore": {
+      "useGitignore": true,
+      "customPatterns": [
+        "node_modules/**",
+        ".git/**",
+        ".next/**",
+        ".astro/**",
+        "dist/**",
+        "**/*.lock",
+        "pnpm-lock.yaml",
+        "yarn.lock",
+        "package-lock.json",
+        "**/*.png",
+        "**/*.jpg",
+        "**/*.jpeg",
+        "**/*.gif",
+        "**/*.svg",
+        "**/*.ico",
+        ".env",
+        ".env.local",
+        ".env.*" 
+      ]
+    }
+  }
+  
