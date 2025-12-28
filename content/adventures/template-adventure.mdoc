@@ -1,0 +1,123 @@
+---
+title: template-adventure
+description: Brief one-line description of this adventure
+duration: '30-45'
+difficulty: beginner
+resources:
+  - id: hero_hp
+    label: Hero HP
+    max: 100
+    initial: 100
+    theme: red
+    style: bar
+    icon: Heart
+  - id: boss_hp
+    label: Boss HP
+    max: 50
+    initial: 50
+    theme: red
+    style: bar
+    icon: Skull
+  - id: trust
+    label: Trust Points
+    max: 100
+    initial: 0
+    theme: gold
+    style: counter
+    icon: Star
+rules:
+  - targetId: boss_hp
+    operator: '<='
+    threshold: 0
+    action: confetti
+    payload: Victory! The boss is defeated!
+  - targetId: hero_hp
+    operator: '<='
+    threshold: 0
+    action: redirect
+    payload: /compendium/welcome?toast=game-over
+  - targetId: trust
+    operator: '>='
+    threshold: 50
+    action: toast
+    payload: The NPC trusts you now!
+surges:
+  - triggerTurn: 3
+    dialogue: >-
+      A dramatic plot twist occurs! The boss gains new power and the stakes
+      are raised!
+    forceFirst: true
+    animation: shake
+    modifyResources:
+      - resourceId: boss_hp
+        delta: 10
+combatants:
+  - id: hero
+    name: The Hero
+    avatar: 🛡️
+    type: hero
+    linkedResource: hero_hp
+  - id: boss
+    name: The Boss
+    avatar: 👹
+    type: enemy
+    linkedResource: boss_hp
+turns: []
+---
+
+# Opening Scene
+
+Read this aloud to set the scene. Use vivid description and engage the senses.
+
+**Prompt the players:** "What do you do?"
+
+---
+
+## Turn 1: First Choice
+
+Present the situation and wait for player response.
+
+**If they choose Option A:**
+- Describe the outcome
+- Modify resources: `hero_hp -10`
+- Advance turn
+
+**If they choose Option B:**
+- Describe the alternative outcome
+- Modify resources: `trust +5`
+- Advance turn
+
+---
+
+## Turn 2: Rising Action
+
+Continue building tension. Reference previous choices.
+
+**Challenge:** Present a difficult decision with no obvious right answer.
+
+---
+
+## Climax
+
+The final confrontation. Stakes are at their highest.
+
+**Boss Battle:**
+- Use the turn queue to manage combat
+- Let players describe their actions
+- Apply resource changes based on narrative choices
+
+---
+
+## Resolution
+
+Wrap up the story based on the outcome:
+
+**Victory Path:**
+- Celebrate their success
+- Reveal rewards or unlocks
+- Hint at future adventures
+
+**Defeat Path:**
+- Don't punish failure
+- Celebrate the attempt
+- Encourage replay with different choices

@@ -22,11 +22,79 @@ Ready to jump straight in? Launch the interactive adventure engine:
     
     An adventure to the mysterious island in the sky. Build trust with Grandmother Cloud and discover what secrets float among the mists.
     
-    **[▶️ Play Interactive Adventure →](/adventure/sky-island)**
-    
-    *Or [read the guide](/compendium/adventures/sky-island/) first*
+    <div class="adventure-card-actions">
+      <a href="/adventure/sky-island" class="play-button">
+        <span class="play-icon">▶️</span>
+        <span>Play Interactive Adventure</span>
+        <span class="arrow">→</span>
+      </a>
+      
+      <a href="/compendium/adventures/sky-island-guide/" class="guide-link">
+        📖 Read the Guide First
+      </a>
+    </div>
   </Card>
 </CardGrid>
+
+<style>{`
+  .adventure-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  
+  .play-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border-radius: 8px;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+  
+  .play-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+  }
+  
+  .play-icon {
+    font-size: 1.1rem;
+  }
+  
+  .arrow {
+    font-size: 1.25rem;
+    transition: transform 0.2s ease;
+  }
+  
+  .play-button:hover .arrow {
+    transform: translateX(4px);
+  }
+  
+  .guide-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: rgb(148, 163, 184) !important;
+    font-size: 0.875rem;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+  }
+  
+  .guide-link:hover {
+    color: rgb(59, 130, 246) !important;
+  }
+`}</style>
 
 :::tip[New to Adventures?]
 If this is your first time, we recommend reading the [Getting Started Guide](#getting-started) below to understand how the interactive engine works!

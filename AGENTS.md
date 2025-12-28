@@ -286,6 +286,55 @@ To create a blank starter kit:
 - **Status:** Being migrated to Keystatic format
 - **Starlight Integration:** Still works for documentation-style adventures
 
+### Adventure Naming Conventions
+
+**Two-Part System**
+
+ParableForge uses a dual content strategy:
+
+**Interactive Adventures** (`content/adventures/`)
+- Format: `{slug}.mdoc`
+- Example: `sky-island.mdoc`
+- URL: `/adventure/sky-island`
+- Title field: Must match filename (e.g., `title: sky-island`)
+- Purpose: Playable with full Sovereign Engine
+
+**Adventure Guides** (`src/content/docs/compendium/adventures/`)
+- Format: `{slug}-guide.mdx`
+- Example: `sky-island-guide.mdx`
+- URL: `/compendium/adventures/sky-island-guide/`
+- Purpose: Reference documentation, tips, background lore
+
+**Relationship**
+
+The guide is a **companion** to the interactive adventure:
+- Guide: Read before playing (optional prep, parent reference)
+- Adventure: The actual playable experience with engine
+
+**Creating New Adventures**
+
+**Recommended Workflow:**
+1. Use Keystatic admin (`/keystatic`) to create interactive adventure
+2. Save to `content/adventures/{slug}.mdoc`
+3. **CRITICAL:** Set title field to match filename exactly (e.g., `title: forest-temple` for `forest-temple.mdoc`)
+4. Manually create companion guide in `src/content/docs/compendium/adventures/{slug}-guide.mdx`
+5. Link between them using PlayAdventureButton (auto-generated) and manual links
+
+**File Naming Rules:**
+- ✅ **Good:** `forest-temple.mdoc` → slug: `forest-temple`, title: `forest-temple`
+- ✅ **Good:** `dragon-mountain.mdoc` → slug: `dragon-mountain`, title: `dragon-mountain`
+- ❌ **Bad:** `Forest Temple.mdoc` → spaces break URLs
+- ❌ **Bad:** `forest-temple.mdoc` with `title: Forest Temple` → slug mismatch causes navigation failures
+- ❌ **Bad:** `dragon_mountain.mdoc` → underscores not ideal for URLs
+
+**Rule:** Use lowercase with hyphens for all adventure files AND title fields. The title field must match the filename exactly (without the .mdoc extension).
+
+**Why This Matters:**
+Keystatic uses `slugField: 'title'` to derive adventure slugs. If the title field doesn't match the filename, navigation will break because:
+- URLs use filename: `/adventure/sky-island`
+- Keystatic lookup uses title: `getAdventure('Sky Island')` ❌
+- Result: Adventure not found error
+
 ## Styling
 
 ### Theme Colors (Forge Dark)

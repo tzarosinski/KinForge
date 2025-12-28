@@ -19,7 +19,12 @@
 // Extract adventure slug from current URL
 const currentPath = Astro.url.pathname;
 const slugMatch = currentPath.match(/\/adventures\/([^\/]+)/);
-const adventureSlug = slugMatch ? slugMatch[1].replace(/\/$/, '') : null;
+let adventureSlug = slugMatch ? slugMatch[1].replace(/\/$/, '') : null;
+
+// Remove '-guide' suffix if present (guide pages link to interactive adventures)
+if (adventureSlug?.endsWith('-guide')) {
+  adventureSlug = adventureSlug.replace(/-guide$/, '');
+}
 
 // Build interactive adventure URL
 const interactiveUrl = adventureSlug ? `/adventure/${adventureSlug}` : null;
