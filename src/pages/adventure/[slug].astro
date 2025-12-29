@@ -1,8 +1,32 @@
 ---
 /**
  * DYNAMIC ADVENTURE ROUTE
- * * Loads the interactive game engine for a specific adventure.
- * * FIX: Explicitly fetches full adventure data to ensure 'Content' is present.
+ * 
+ * Loads adventures from Keystatic and renders them with the Sovereign Engine.
+ * 
+ * RENDERING MODE: Hybrid (Prerendered Static Pages)
+ * - This page is prerendered at build time (not SSR)
+ * - Adventures are baked into static HTML for fastest loading
+ * - Keystatic admin remains SSR for dynamic editing
+ * - Rebuild required to publish content changes (acceptable for curated content)
+ * 
+ * Flow:
+ * 1. getStaticPaths() - Fetch all adventures from Keystatic at build time
+ * 2. Read specific adventure by slug
+ * 3. Apply graceful fallbacks if missing data
+ * 4. Render with AdventureLayout + engine components
+ * 
+ * Error Handling ("The Show Must Go On"):
+ * - Missing adventure → Redirect to compendium with toast
+ * - No resources → Use fallback resource
+ * - No combatants → Queue hidden (graceful degradation)
+ * - Keystatic read fails → Fallback adventure data
+ * - Markdoc rendering fails → Fallback to plain markdown
+ * 
+ * HYBRID CONTENT STRATEGY:
+ * - Primary: Markdoc (rich formatting, component support)
+ * - Fallback: Plain markdown (bulletproof, always works)
+ * - Visual errors: User-friendly messages with recovery options
  */
 
 import { getAdventure, getAllAdventures, FALLBACK_ADVENTURE } from '../../lib/keystatic-reader';
@@ -11,71 +35,160 @@ import AdventureError from '../../components/AdventureError.astro';
 import MarkdownFallback from '../../components/MarkdownFallback.astro';
 import type { Resource, Rule, SurgeEvent } from '../../lib/engine/types';
 
-// 1. Generate paths for all adventures (Metadata only)
+// Prerender this page at build time (hybrid rendering with SSR site)
+export const prerender = true;
+
 export async function getStaticPaths() {
   const adventures = await getAllAdventures();
-  return adventures.map(adv => ({
-    params: { slug: adv.slug },
+  
+  return adventures.map(adventure => ({
+    params: { slug: adventure.slug },
+    props: { 
+      slug: adventure.slug,
+      hasData: true 
+    }
   }));
 }
 
-// 2. Get the specific slug
 const { slug } = Astro.params;
+const adventure = await getAdventure(slug!);
 
-// 3. FETCH FULL DATA (Crucial Step)
-// We fetch here to ensure we get the 'Content' component and all rules
-const adventureData = await getAdventure(slug as string);
-
-// 4. Handle "Not Found" or Error
-if (!adventureData) {
-  throw new Error(`Adventure not found: ${slug}`);
+// Graceful fallback if adventure not found
+if (!adventure) {
+  console.warn(`Adventure not found: ${slug}. Redirecting to compendium.`);
+  return Astro.redirect('/compendium/welcome?toast=adventure-not-found');
 }
 
 const { 
-  title: rawTitle, 
+  title, 
   description, 
-  resources, 
-  rules, 
-  surges, 
-  combatants = [], 
-  maxTurns,
-  renderMode = 'markdoc',
-  Content,
-  rawContent,
-  contentError
-} = adventureData;
+  duration,
+  difficulty,
+  resources = [], 
+  rules = [], 
+  surges = [],
+  combatants = [],
+  content 
+} = adventure;
 
-// 5. Helper: Prettify Titles
-// Transforms "siege-of-ironhold" -> "Siege of Ironhold"
-const formatTitle = (str: string) => {
-  if (!str) return '';
-  // If it has spaces, it's likely already formatted. Return as is.
-  if (str.includes(' ')) return str;
-  // If it's a slug (hyphens), format it.
-  return str
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
+// ============================================================================
+// CONTENT RENDERING WITH HYBRID FALLBACK STRATEGY
+// ============================================================================
 
-const displayTitle = formatTitle(rawTitle);
+let Content: any = null;
+let contentError: Error | null = null;
+let renderMode: 'markdoc' | 'fallback' | 'error' = 'markdoc';
+let rawContent = '';
 
-// 6. Safe Defaults
-const safeResources: Resource[] = resources || FALLBACK_ADVENTURE.resources;
-const safeRules: Rule[] = rules || [];
-const safeSurges: SurgeEvent[] = surges || [];
-const safeCombatants: any[] = combatants || [];
+// Check if user forced safe mode
+const safeModeForced = typeof sessionStorage !== 'undefined' && 
+  sessionStorage.getItem('pf-safe-mode') === 'true';
+
+if (safeModeForced) {
+  console.log('🛡️ Safe Mode forced by user, skipping Markdoc');
+  renderMode = 'fallback';
+}
+
+// Try to render Markdoc content
+if (!safeModeForced) {
+  try {
+    console.log(`🔧 [${slug}] Rendering Markdoc content...`);
+    
+    const result = await content();
+    
+    // Check if result has the expected structure
+    if (result && typeof result === 'object' && 'node' in result) {
+      // This is the raw Markdoc AST, we need to render it
+      // For now, fall back to plain markdown
+      console.warn(`⚠️ [${slug}] Markdoc returned AST instead of component, using fallback`);
+      renderMode = 'fallback';
+    } else {
+      // Assume it's a renderable component
+      Content = result;
+      console.log(`✅ [${slug}] Markdoc rendered successfully`);
+    }
+  } catch (error) {
+    console.error(`❌ [${slug}] Markdoc rendering failed:`, error);
+    contentError = error as Error;
+    renderMode = 'fallback';
+  }
+}
+
+// Read raw content for fallback renderer
+if (renderMode === 'fallback') {
+  try {
+    // Read the raw .mdoc file
+    const fs = await import('node:fs/promises');
+    const path = await import('node:path');
+    const filePath = path.join(process.cwd(), 'content', 'adventures', `${slug}.mdoc`);
+    rawContent = await fs.readFile(filePath, 'utf-8');
+    console.log(`📄 [${slug}] Raw content loaded for fallback rendering`);
+  } catch (fileError) {
+    console.error(`❌ [${slug}] Could not read raw content file:`, fileError);
+    renderMode = 'error';
+    contentError = fileError as Error;
+  }
+}
+
+// ============================================================================
+// DATA PROCESSING WITH TYPE SAFETY
+// ============================================================================
+
+// Convert readonly arrays to mutable arrays and handle null values
+const safeResources: Resource[] = (resources.length > 0 ? resources : FALLBACK_ADVENTURE.resources).map(r => ({
+  id: r.id,
+  label: r.label,
+  max: r.max ?? 100,
+  initial: r.initial ?? 0,
+  theme: r.theme,
+  style: r.style,
+  icon: r.icon || undefined
+}));
+
+const safeCombatants = (combatants && combatants.length > 0 ? combatants : []).map(c => ({
+  id: c.id,
+  name: c.name,
+  avatar: c.avatar,
+  type: c.type,
+  linkedResource: c.linkedResource || undefined
+}));
+
+const safeRules: Rule[] = (rules || []).map(r => ({
+  targetId: r.targetId,
+  operator: r.operator,
+  threshold: r.threshold ?? 0,
+  action: r.action,
+  payload: r.payload
+}));
+
+const safeSurges: SurgeEvent[] = (surges || []).map(s => ({
+  triggerTurn: s.triggerTurn ?? 1,
+  dialogue: s.dialogue,
+  forceFirst: s.forceFirst,
+  animation: s.animation,
+  modifyResources: (s.modifyResources || []).map(m => ({
+    resourceId: m.resourceId,
+    delta: m.delta ?? 0
+  }))
+}));
+
+// Calculate max turns if defined
+const maxTurns = safeSurges.length > 0 
+  ? Math.max(...safeSurges.map(s => s.triggerTurn)) + 5 
+  : undefined;
 
 console.log(`🎮 [${slug}] Adventure loaded:`, {
-  title: displayTitle,
   renderMode,
   resources: safeResources.length,
-  combatants: safeCombatants.length
+  rules: safeRules.length,
+  surges: safeSurges.length,
+  combatants: safeCombatants.length,
+  maxTurns
 });
 ---
 
 <AdventureLayout
-  title={displayTitle}
+  title={title}
   description={description}
   resources={safeResources}
   rules={safeRules}
@@ -83,6 +196,27 @@ console.log(`🎮 [${slug}] Adventure loaded:`, {
   combatants={safeCombatants}
   maxTurns={maxTurns}
 >
+  <!-- Adventure metadata badges -->
+  <div class="mb-6 flex gap-4 text-sm text-slate-400 not-prose">
+    <span class="flex items-center gap-1">
+      ⏱️ <span>{duration || '30-45 min'}</span>
+    </span>
+    <span class="flex items-center gap-1">
+      📊 <span class="capitalize">{difficulty || 'Beginner'}</span>
+    </span>
+    {safeResources.length > 0 && (
+      <span class="flex items-center gap-1">
+        🎯 <span>{safeResources.length} Resources</span>
+      </span>
+    )}
+    {safeCombatants.length > 0 && (
+      <span class="flex items-center gap-1">
+        ⚔️ <span>{safeCombatants.length} Combatants</span>
+      </span>
+    )}
+  </div>
+  
+  <!-- CONTENT RENDERING (Hybrid Strategy) -->
   
   {/* Markdoc Success */}
   {renderMode === 'markdoc' && Content && (
@@ -91,14 +225,14 @@ console.log(`🎮 [${slug}] Adventure loaded:`, {
   
   {/* Fallback Markdown Renderer */}
   {renderMode === 'fallback' && rawContent && (
-    <MarkdownFallback rawContent={rawContent} showWarning={false} />
+    <MarkdownFallback rawContent={rawContent} showWarning={true} />
   )}
   
   {/* Error State */}
   {renderMode === 'error' && (
     <AdventureError 
       error={contentError} 
-      adventureName={displayTitle}
+      adventureName={title}
       showSafeMode={false}
     />
   )}
