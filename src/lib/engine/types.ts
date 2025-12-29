@@ -21,7 +21,7 @@ export interface Rule {
   targetId: string;
   operator: '<' | '>' | '==' | '>=' | '<=';
   threshold: number;
-  action: 'toast' | 'confetti' | 'shake' | 'redirect' | 'unlock' | 'advance_turn' | 'surge' | 'flash';
+  action: 'toast' | 'confetti' | 'shake' | 'redirect' | 'unlock' | 'advance_turn' | 'surge' | 'flash' | 'remove_combatant';
   payload: string;
 }
 

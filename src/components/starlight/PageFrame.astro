@@ -1,10 +1,23 @@
 ---
 import MobileMenuToggle from 'virtual:starlight/components/MobileMenuToggle';
-import HealthTracker from '../HealthTracker.tsx';
+import DirectorHUD from '../../lib/engine/components/DirectorHUD';
+import PartySetup from '../../lib/engine/components/PartySetup';
+import { getAdventure } from '../../lib/keystatic-reader';
 
 const { hasSidebar } = Astro.locals.starlightRoute;
+
 // Only show tracker on adventure pages
 const isAdventure = Astro.url.pathname.includes('/compendium/adventures/');
+
+// Data fetching for the HUD
+let adventureResources = [];
+if (isAdventure) {
+  const slug = Astro.url.pathname.split('/').pop()?.replace(/-guide$/, '');
+  if (slug) {
+    const adventure = await getAdventure(slug);
+    if (adventure) adventureResources = adventure.resources || [];
+  }
+}
 ---
 
 <div class="page sl-flex">
@@ -22,14 +35,24 @@ const isAdventure = Astro.url.pathname.includes('/compendium/adventures/');
 		)
 	}
 	<div class="main-frame">
-		{isAdventure && (
-			<div class="health-tracker-container">
-				<HealthTracker client:only="react" />
-			</div>
-		)}
-		<slot />
-	</div>
+    {isAdventure && (
+        <div class="engine-layer">
+            <DirectorHUD client:only="react" resources={adventureResources} />
+            <PartySetup client:only="react" />
+        </div>
+    )}
+    <slot />
 </div>
+
+<style>
+	@layer starlight.core {
+        /* ... keep existing styles ... */
+        .engine-layer {
+            position: relative;
+            z-index: 50;
+        }
+    }
+</style>
 
 <style>
 	@layer starlight.core {

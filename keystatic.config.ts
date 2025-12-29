@@ -96,13 +96,15 @@ export default config({
                 { label: 'Redirect to URL', value: 'redirect' },
                 { label: 'Unlock Content', value: 'unlock' },
                 { label: 'Advance Turn', value: 'advance_turn' },
-                { label: 'Trigger Surge Event', value: 'surge' }
+                { label: 'Trigger Surge Event', value: 'surge' },
+                { label: 'Remove Combatant (Kill)', value: 'remove_combatant' }
               ],
               defaultValue: 'toast'
             }),
             payload: fields.text({ 
               label: 'Effect Data',
-              description: 'Message text, URL, or JSON object',
+             // Update description to help yourself remember
+              description: 'Message text, URL, or Combatant ID (for remove_combatant)',
               multiline: true
             })
           }),

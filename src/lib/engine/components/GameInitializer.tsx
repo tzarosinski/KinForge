@@ -17,53 +17,35 @@
  */
 
 import { useEffect } from 'react';
-import { initEngine, initCombatants, resetEngine } from '../store';
+import { initEngine, startEncounter, resetEngine } from '../store';
 import type { Resource } from '../types';
-
-interface Combatant {
-  id: string;
-  name: string;
-  avatar: string;
-  type: 'hero' | 'enemy' | 'ally';
-  linkedResource?: string;
-}
 
 interface GameInitializerProps {
   adventureSlug: string;
   resources: Resource[];
-  rules?: any[]; // Rules are handled by EngineDirector, we just log them here
-  combatants?: Combatant[];
+  combatants?: any[];
 }
 
 export default function GameInitializer({ 
   adventureSlug, 
   resources, 
-  rules = [],
   combatants = []
 }: GameInitializerProps) {
   useEffect(() => {
-    console.log('🎮 Initializing Sovereign Engine...', {
-      adventure: adventureSlug,
-      resources: resources.length,
-      rules: rules.length,
-      combatants: combatants.length
-    });
-    
-    // Initialize resources and state
+    // 1. Initialize resources
     initEngine(adventureSlug, resources);
     
-    // Initialize combatant queue (if present)
-    if (combatants.length > 0) {
-      initCombatants(combatants);
-      console.log('⚔️ Combat queue initialized with', combatants.length, 'combatants');
-    }
+    // 2. Setup Encounter (uses stored party if available)
+    // We defer this slightly to ensure the persisted store is hydrated
+    setTimeout(() => {
+      if (combatants.length > 0) {
+        startEncounter(combatants);
+      }
+    }, 50);
     
-    // Cleanup on unmount (switching to different adventure)
-    return () => {
-      console.log('🧹 Cleaning up engine state for', adventureSlug);
-      resetEngine();
-    };
-  }, [adventureSlug]); // Only re-init if adventure slug changes
+    // Cleanup on unmount
+    return () => resetEngine();
+  }, [adventureSlug]);
   
-  return null; // Invisible component
+  return null;
 }

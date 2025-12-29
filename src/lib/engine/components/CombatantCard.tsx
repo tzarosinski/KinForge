@@ -1,27 +1,13 @@
 /**
- * COMBATANT CARD COMPONENT
- * 
- * A draggable card representing a combatant in the turn queue.
- * 
- * Features:
- * - Drag handle with @dnd-kit sortable
- * - Visual indicator for active turn (golden ring)
- * - Optional HP display (if linkedResource provided)
- * - Color-coded by type (hero/enemy/ally)
- * - Touch-optimized (long-press to drag)
- * 
- * Design Notes:
- * - Minimum 48px height for touch targets
- * - Avatar emoji for quick visual recognition
- * - Drag handle on left (doesn't interfere with content)
- * - Active state is unmistakable (ring + text)
+ * COMBATANT CARD COMPONENT (Compact Mobile Version)
+ * * Tiny on mobile, Large on desktop.
+ * * Active card "pops" out visually.
  */
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useStore } from '@nanostores/react';
 import { $engineState, $currentCombatant } from '../store';
-import { GripVertical } from 'lucide-react';
 
 interface CombatantCardProps {
   id: string;
@@ -56,15 +42,21 @@ export default function CombatantCard({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging || isActive ? 20 : 1,
   };
   
-  // Theme colors by combatant type
-  const typeColors = {
-    hero: 'border-blue-500 bg-blue-900/20',
-    enemy: 'border-red-500 bg-red-900/20',
-    ally: 'border-green-500 bg-green-900/20'
+  // Theme colors
+  const typeStyles = {
+    hero: 'border-blue-900/50 bg-blue-950/40',
+    enemy: 'border-red-900/50 bg-red-950/40',
+    ally: 'border-green-900/50 bg-green-950/40'
   };
+
+  // Active State: Gold Border, Scale Up
+  const activeStyle = isActive 
+    ? 'border-forge-gold bg-slate-900 shadow-[0_0_15px_rgba(245,158,11,0.4)] scale-110 -translate-y-1 z-20 ring-1 ring-forge-gold/50' 
+    : `${typeStyles[type]} opacity-60 grayscale-[0.3] scale-90`;
   
   return (
     <div
@@ -72,46 +64,38 @@ export default function CombatantCard({
       style={style}
       className={`
         relative
-        p-3 
-        min-h-[48px]
-        rounded-lg border-2
-        ${typeColors[type]}
-        ${isActive ? 'ring-2 ring-yellow-500 ring-offset-2 ring-offset-slate-900' : ''}
-        transition-all
-        touch-manipulation
+        w-14 h-20 md:w-24 md:h-32  /* <--- NEW SMALLER DIMENSIONS */
+        rounded-lg md:rounded-xl border
+        ${activeStyle}
+        transition-all duration-300 ease-out
+        flex flex-col items-center justify-center gap-0.5 md:gap-1
+        shrink-0 cursor-grab active:cursor-grabbing
+        touch-manipulation select-none
       `}
+      {...attributes} 
+      {...listeners}
     >
-      {/* Drag Handle */}
-      <div 
-        {...attributes} 
-        {...listeners}
-        className="absolute left-1 top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing p-1"
-      >
-        <GripVertical className="w-4 h-4 text-slate-600" />
-      </div>
+      {/* Avatar */}
+      <span className={`text-2xl md:text-5xl filter drop-shadow-md transition-transform ${isActive ? 'scale-110' : ''}`}>
+        {avatar}
+      </span>
       
-      {/* Card Content */}
-      <div className="pl-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl select-none">{avatar}</span>
-          <div>
-            <div className="font-bold text-white text-sm">{name}</div>
-            {isActive && (
-              <div className="text-xs text-yellow-400 font-semibold">⚡ Active Turn</div>
-            )}
-          </div>
-        </div>
-        
-        {/* HP Display (if linked to a resource) */}
-        {hp !== null && (
-          <div className="text-right">
-            <div className="text-xs text-slate-400">HP</div>
-            <div className={`text-lg font-bold ${hp <= 5 ? 'text-red-400' : 'text-white'}`}>
-              {hp}
-            </div>
-          </div>
-        )}
+      {/* Name (Truncated on mobile) */}
+      <div className={`text-[9px] md:text-xs font-bold text-center leading-tight px-0.5 w-full truncate ${isActive ? 'text-white' : 'text-slate-500'}`}>
+        {name}
       </div>
+
+      {/* HP Badge */}
+      {isActive && (
+        <div className="absolute -bottom-2 px-1.5 py-0.5 bg-forge-gold text-forge-dark text-[8px] font-black uppercase tracking-wider rounded-full shadow-sm">
+          Act
+        </div>
+      )}
+      {!isActive && hp !== null && (
+        <div className="absolute -bottom-2 px-1.5 py-0.5 bg-black/60 text-slate-400 text-[8px] font-mono rounded-full border border-slate-700">
+          {hp}
+        </div>
+      )}
     </div>
   );
 }

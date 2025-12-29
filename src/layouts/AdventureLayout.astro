@@ -1,23 +1,6 @@
 ---
 /**
- * ADVENTURE LAYOUT - Mobile-First Director Dashboard
- * 
- * The main layout for adventure pages (/adventure/[slug]).
- * This is where the Sovereign Engine comes to life.
- * 
- * Layout structure:
- * - Desktop: Split screen (content left, drawer right as fixed sidebar)
- * - Mobile: Full-screen content with collapsible drawer at bottom
- * 
- * Engine components are injected here and work together:
- * - GameInitializer: Sets up engine state on mount
- * - EngineDirector: Watches state, fires rules (invisible)
- * - SurgeOverlay: Full-screen interrupts (shows when triggered)
- * - DirectorDrawer: Mobile-first control panel
- * - DraggableQueue: Combatant turn order (if combatants present)
- * - ResourceCard: Visual display of each tracked resource
- * 
- * All React components use client:only="react" to avoid hydration issues.
+ * ADVENTURE LAYOUT - Updated for Horizontal Initiative Track
  */
 
 import BaseLayout from './BaseLayout.astro';
@@ -26,17 +9,10 @@ import EngineDirector from '../lib/engine/components/EngineDirector';
 import SurgeOverlay from '../lib/engine/components/SurgeOverlay';
 import DirectorDrawer from '../lib/engine/components/DirectorDrawer';
 import SmartDrawerController from '../lib/engine/components/SmartDrawerController';
+import DraggableQueue from '../lib/engine/components/DraggableQueue'; // Moved here
 import ErrorBoundary from '../components/ErrorBoundary';
 import { Toaster } from 'sonner';
 import type { Resource, Rule, SurgeEvent } from '../lib/engine/types';
-
-interface Combatant {
-  id: string;
-  name: string;
-  avatar: string;
-  type: 'hero' | 'enemy' | 'ally';
-  linkedResource?: string;
-}
 
 interface Props {
   title: string;
@@ -44,7 +20,7 @@ interface Props {
   resources: Resource[];
   rules: Rule[];
   surges: SurgeEvent[];
-  combatants?: Combatant[];
+  combatants?: any[];
   maxTurns?: number;
 }
 
@@ -52,7 +28,7 @@ const { title, description, resources, rules, surges, combatants = [], maxTurns 
 ---
 
 <BaseLayout title={title} description={description}>
-  <!-- Engine Initialization -->
+  {/* Engine Logic Components */}
   <ErrorBoundary client:only="react">
     <GameInitializer 
       client:only="react"
@@ -63,13 +39,8 @@ const { title, description, resources, rules, surges, combatants = [], maxTurns 
     />
   </ErrorBoundary>
   
-  <!-- Engine Components (client-side only) -->
   <ErrorBoundary client:only="react">
-    <EngineDirector 
-      client:only="react" 
-      rules={rules} 
-      surges={surges}
-    />
+    <EngineDirector client:only="react" rules={rules} surges={surges} />
   </ErrorBoundary>
   
   <ErrorBoundary client:only="react">
@@ -82,32 +53,43 @@ const { title, description, resources, rules, surges, combatants = [], maxTurns 
   
   <Toaster client:only="react" position="top-center" />
   
-  <div class="min-h-screen bg-forge-dark flex flex-col md:flex-row">
-    <!-- Main content area (scrollable) -->
-    <main class="flex-1 p-6 pb-40 md:pb-6 md:h-screen md:overflow-y-auto">
-      <div class="max-w-prose mx-auto">
-        <div class="prose prose-invert prose-forge">
-          <h1 class="text-4xl font-bold mb-4 animate-forge-flow">{title}</h1>
-          <p class="text-slate-300 mb-8">{description}</p>
-          <slot />
-        </div>
-      </div>
-    </main>
+  <div class="min-h-screen bg-forge-dark flex flex-col">
     
-    <!-- Director Drawer (mobile: sticky footer, desktop: sidebar) -->
+    {/* 1. TOP BAR: INITIATIVE TRACKER */}
     <ErrorBoundary client:only="react">
-      <DirectorDrawer 
-        client:only="react"
-        resources={resources}
-        combatants={combatants}
-        maxTurns={maxTurns}
-      />
+      <div class="sticky top-0 z-30 w-full">
+        <DraggableQueue client:only="react" />
+      </div>
     </ErrorBoundary>
+
+    {/* 2. MAIN LAYOUT (Content + Sidebar) */}
+    <div class="flex flex-col md:flex-row flex-1 relative">
+        
+        {/* Story Content */}
+        <main class="flex-1 p-6 pb-40 md:pb-6 md:h-[calc(100vh-140px)] md:overflow-y-auto">
+          <div class="max-w-prose mx-auto pt-4">
+            <div class="prose prose-invert prose-forge">
+              <h1 class="text-4xl font-bold mb-4 animate-forge-flow">{title}</h1>
+              <p class="text-slate-300 mb-8">{description}</p>
+              <slot />
+            </div>
+          </div>
+        </main>
+        
+        {/* Controls Sidebar */}
+        <ErrorBoundary client:only="react">
+          <DirectorDrawer 
+            client:only="react"
+            resources={resources}
+            combatants={combatants} // Passed for data, but Queue is rendered above
+            maxTurns={maxTurns}
+          />
+        </ErrorBoundary>
+    </div>
   </div>
 </BaseLayout>
 
 <style>
-  /* Custom prose styles for adventure content */
   .prose-forge {
     --tw-prose-body: theme('colors.slate.200');
     --tw-prose-headings: theme('colors.white');
@@ -123,5 +105,14 @@ const { title, description, resources, rules, surges, combatants = [], maxTurns 
     background: rgba(245, 158, 11, 0.1);
     padding: 1rem 1.5rem;
     border-radius: 0.5rem;
+  }
+  
+  /* Hide scrollbar for initiative track */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 </style>

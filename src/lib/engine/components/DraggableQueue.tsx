@@ -1,25 +1,10 @@
 /**
- * DRAGGABLE QUEUE COMPONENT
- * 
- * Manages the turn order for combat encounters with drag-and-drop.
- * 
- * Touch Optimization:
- * - 250ms long-press delay (prevents scroll conflicts)
- * - 5px tolerance (allows tiny hand movements)
- * - Visual feedback during drag (opacity change)
- * 
- * Features:
- * - Reorderable combatant cards
- * - "End Turn" button to advance active combatant
- * - Visual indicator of current turn
- * - Automatic turn advancement when cycling back to first
- * 
- * Integration:
- * - Reads from $combatantQueue store
- * - Updates queue order on drag end
- * - Advances turns via advanceCombatantTurn()
+ * DRAGGABLE QUEUE (Position-Based Authority)
+ * * The card in the first slot (Leftmost) is ALWAYS the Active Player.
+ * * Dragging a card to slot 0 makes it active immediately.
  */
 
+import { useState } from 'react';
 import { 
   DndContext, 
   closestCenter,
@@ -31,7 +16,7 @@ import {
 import type { DragEndEvent } from '@dnd-kit/core';
 import {
   SortableContext,
-  verticalListSortingStrategy,
+  horizontalListSortingStrategy,
   arrayMove
 } from '@dnd-kit/sortable';
 import { useStore } from '@nanostores/react';
@@ -41,95 +26,89 @@ import { SkipForward } from 'lucide-react';
 
 export default function DraggableQueue() {
   const combatants = useStore($combatantQueue);
-  const currentCombatant = useStore($currentCombatant);
+  const [isAnimating, setIsAnimating] = useState(false);
   
-  // Touch sensor with 250ms delay (prevents scroll conflicts)
-  // Mouse sensor with 8px distance (prevents accidental drags)
   const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 8, // 8px movement before drag starts
-      }
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 250, // Long-press for 250ms
-        tolerance: 5 // Allow 5px movement during press
-      }
-    })
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } })
   );
   
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    
     if (!over || active.id === over.id) return;
     
     const oldIndex = combatants.findIndex(c => c.id === active.id);
     const newIndex = combatants.findIndex(c => c.id === over.id);
     
+    // 1. Calculate the new order
     const newOrder = arrayMove(combatants, oldIndex, newIndex);
+    
+    // 2. Commit to Store
     reorderQueue(newOrder);
+    
+    // 3. ENFORCE "Leftmost is Active" Rule
+    // Whoever ended up in index 0 gets the focus immediately
+    if (newOrder.length > 0) {
+      $currentCombatant.set(newOrder[0].id);
+    }
   };
   
-  // Don't render if no combatants
+  const handleNextTurn = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setTimeout(() => {
+      advanceCombatantTurn();
+      setIsAnimating(false);
+    }, 300);
+  };
+  
   if (combatants.length === 0) return null;
   
-  // Find current combatant for display
-  const currentCombatantData = combatants.find(c => c.id === currentCombatant);
-  
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wide">
-          Turn Order
-        </h4>
-        <button
-          onClick={advanceCombatantTurn}
-          className="px-3 py-2 min-h-[44px] bg-forge-blue text-white rounded-lg text-xs font-semibold hover:bg-blue-600 active:bg-blue-700 transition-all flex items-center gap-1 touch-manipulation"
+    <div className="w-full bg-slate-900/90 backdrop-blur-md border-b border-white/5 relative flex items-center h-24 md:h-40 overflow-hidden shadow-lg">
+      
+      {/* Scrollable Track */}
+      <div className="flex-1 overflow-hidden py-2 px-3 relative h-full flex items-center">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          <SkipForward className="w-4 h-4" />
-          End Turn
+          <SortableContext 
+            items={combatants.map(c => c.id)}
+            strategy={horizontalListSortingStrategy}
+          >
+            <div 
+              className={`
+                flex flex-row gap-2 min-w-max transition-transform ease-in-out items-center
+                ${isAnimating ? 'duration-300 -translate-x-[4rem] md:-translate-x-[7rem]' : 'duration-0 translate-x-0'}
+              `}
+            >
+              {combatants.map((combatant) => (
+                <CombatantCard
+                  key={combatant.id}
+                  id={combatant.id}
+                  name={combatant.name}
+                  avatar={combatant.avatar}
+                  type={combatant.type}
+                  linkedResource={combatant.linkedResource}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+      </div>
+
+      {/* Sticky Next Button */}
+      <div className="shrink-0 pr-3 pl-1 bg-gradient-to-l from-slate-900 via-slate-900 to-transparent h-full flex items-center z-20">
+        <button
+          onClick={handleNextTurn}
+          disabled={isAnimating}
+          className="group flex flex-col items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-forge-blue/10 border border-forge-blue/30 hover:bg-forge-blue hover:text-white transition-all active:scale-95 touch-manipulation"
+        >
+          <SkipForward className="w-5 h-5 md:w-6 md:h-6 text-forge-blue group-hover:text-white" />
         </button>
       </div>
-      
-      {/* Current combatant display */}
-      {currentCombatantData && (
-        <div className="text-center py-2 bg-yellow-900/20 border border-yellow-500/50 rounded">
-          <p className="text-xs text-yellow-400 font-semibold">Active:</p>
-          <p className="text-white font-bold">
-            {currentCombatantData.avatar} {currentCombatantData.name}
-          </p>
-        </div>
-      )}
-      
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext 
-          items={combatants.map(c => c.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          <div className="space-y-2">
-            {combatants.map(combatant => (
-              <CombatantCard
-                key={combatant.id}
-                id={combatant.id}
-                name={combatant.name}
-                avatar={combatant.avatar}
-                type={combatant.type}
-                linkedResource={combatant.linkedResource}
-              />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
-      
-      {/* Mobile Hint */}
-      <p className="text-[10px] text-slate-500 text-center md:hidden">
-        💡 Long-press a card to reorder · Tap "End Turn" to advance
-      </p>
     </div>
   );
 }

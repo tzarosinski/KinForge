@@ -1,25 +1,18 @@
 /**
  * SOVEREIGN ENGINE - EFFECTS SYSTEM
- * 
- * This module handles all visual/audio effects triggered by rules.
+ * * This module handles all visual/audio effects triggered by rules.
  * Each effect is designed to provide immediate feedback and create
  * memorable moments in the adventure.
- * 
- * Design philosophy:
- * - Effects should be lightweight (no heavy libraries)
- * - They should work on mobile AND desktop
- * - They should match the Forge Dark aesthetic
  */
 
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
+import { removeCombatant } from './store';
 
 /**
  * Fire an effect based on the action type
- * 
- * This is the main entry point called by EngineDirector when rules trigger.
- * 
- * @param action - The type of effect to fire
+ * * This is the main entry point called by EngineDirector when rules trigger.
+ * * @param action - The type of effect to fire
  * @param payload - Data for the effect (message text, URL, etc.)
  */
 export function fireEffect(action: string, payload: string) {
@@ -75,7 +68,6 @@ export function fireEffect(action: string, payload: string) {
       
     case 'unlock':
       // Save to localStorage that content is unlocked
-      // This allows gating future content behind achievements
       const unlocked = JSON.parse(localStorage.getItem('pf-unlocked') || '[]');
       if (!unlocked.includes(payload)) {
         unlocked.push(payload);
@@ -91,6 +83,19 @@ export function fireEffect(action: string, payload: string) {
         });
       }
       break;
+
+    case 'remove_combatant':
+      // NEW: Remove an enemy from the turn queue (Death/Flee)
+      removeCombatant(payload);
+      toast(`Combatant Defeated: ${payload}`, {
+        duration: 3000,
+        style: {
+          background: '#0B0F19',
+          color: '#EF4444',
+          border: '2px solid #EF4444',
+        }
+      });
+      break;
       
     default:
       console.warn(`Unknown effect action: ${action}`);
@@ -99,12 +104,6 @@ export function fireEffect(action: string, payload: string) {
 
 /**
  * Check if content is unlocked
- * 
- * Use this to conditionally show sections based on achievements.
- * Example: "Chapter 2" only appears if player completed "Chapter 1"
- * 
- * @param contentId - The identifier of the content to check
- * @returns true if unlocked, false otherwise
  */
 export function isUnlocked(contentId: string): boolean {
   if (typeof window === 'undefined') return false;
@@ -113,7 +112,7 @@ export function isUnlocked(contentId: string): boolean {
 }
 
 /**
- * Clear all unlocks (useful for testing or "reset progress")
+ * Clear all unlocks
  */
 export function clearUnlocks() {
   if (typeof window !== 'undefined') {

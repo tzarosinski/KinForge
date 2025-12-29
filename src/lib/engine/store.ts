@@ -1,18 +1,6 @@
 /**
  * SOVEREIGN ENGINE STORE
- * 
- * This is the "brain" of the engine. It manages all game state using Nano Stores.
- * 
- * Why Nano Stores instead of React state or Zustand?
- * 1. Works across ANY framework (React, Vue, Svelte, vanilla JS)
- * 2. Extremely lightweight (~1KB)
- * 3. Built-in persistence via @nanostores/persistent
- * 4. Perfect for the "Sovereign Starter Kit" philosophy (zero vendor lock-in)
- * 
- * State persistence strategy:
- * - Guest users: State saved to localStorage with predictable key (guest-adventureSlug)
- * - Authenticated users: Unique session ID per playthrough (adventureSlug-timestamp)
- * - This allows guests to try the product while preserving upgrade path to premium
+ * * This is the "brain" of the engine. It manages all game state using Nano Stores.
  */
 
 import { persistentAtom } from '@nanostores/persistent';
@@ -25,7 +13,6 @@ import type { EngineState, TurnHistoryEntry, Resource, SurgeEvent } from './type
 
 /**
  * The main state store - a simple key-value dictionary
- * Example: { player_hp: 15, goblin_hp: 8, _currentTurn: 3 }
  */
 export const $engineState = atom<EngineState>({});
 
@@ -46,41 +33,30 @@ if (typeof window !== 'undefined') {
 }
 
 /**
- * Session identifier - unique ID for this playthrough
- * Format: "adventureSlug-timestamp" (auth) or "guest-adventureSlug" (guest)
+ * Session identifier
  */
 export const $sessionId = persistentAtom<string>('pf-session:', '');
+
+/**
+ * The Real-Life Party (NEW)
+ * Stores the actual kids playing this session.
+ */
+export const $party = persistentAtom<Array<{ id: string; name: string; avatar: string }>>(
+  'pf-party', 
+  [],
+  {
+    encode: JSON.stringify,
+    decode: JSON.parse
+  }
+);
 
 // ============================================================================
 // SESSION-ONLY STATE (resets on page load)
 // ============================================================================
 
-/**
- * Tracks which rules have been fired this session
- * Prevents spam: "You won!" shouldn't show 50 times if XP keeps increasing
- * 
- * Format: Set of strings like "3:5" (turn 3, rule index 5)
- */
 export const $firedRules = atom<Set<string>>(new Set());
-
-/**
- * History of all turns for the rewind feature
- * Each entry is a complete snapshot of engine state at that turn
- */
 export const $turnHistory = atom<TurnHistoryEntry[]>([]);
-
-/**
- * Currently active surge event (if any)
- * When set, SurgeOverlay component displays the full-screen interrupt
- */
 export const $activeSurge = atom<SurgeEvent | null>(null);
-
-/**
- * COMBATANT QUEUE STATE
- * 
- * Manages the turn order for combat encounters.
- * Each combatant has an ID, name, avatar, type, and optional linked resource (HP).
- */
 export const $combatantQueue = atom<Array<{
   id: string;
   name: string;
@@ -88,117 +64,54 @@ export const $combatantQueue = atom<Array<{
   type: 'hero' | 'enemy' | 'ally';
   linkedResource?: string;
 }>>([]);
-
-/**
- * Current active combatant (whose turn it is)
- */
 export const $currentCombatant = atom<string | null>(null);
-
-/**
- * MOBILE DRAWER STATE
- * 
- * Controls whether the mobile drawer is expanded or collapsed.
- * Desktop mode ignores this (drawer is always visible as sidebar).
- */
 export const $drawerExpanded = atom<boolean>(false);
-
-/**
- * Auto-expand trigger
- * When set to true, drawer will expand on next render.
- * Used by surge events and critical state changes.
- */
 export const $shouldAutoExpand = atom<boolean>(false);
 
 // ============================================================================
-// COMPUTED VALUES (auto-update when dependencies change)
+// COMPUTED VALUES
 // ============================================================================
 
-/**
- * The current turn number (read from _currentTurn in engine state)
- */
 export const $currentTurn = computed($engineState, state => state._currentTurn || 1);
 
 // ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================
 
-/**
- * Initialize the engine for a new adventure session
- * 
- * This function:
- * 1. Creates a session ID (guest vs authenticated)
- * 2. Initializes all resources to their starting values
- * 3. Sets up system variables (_currentTurn, _sessionStart)
- * 4. Clears any previous state
- * 
- * @param adventureSlug - The adventure identifier (e.g. "sky-island")
- * @param resources - Array of resource definitions from adventure frontmatter
- */
 export function initEngine(adventureSlug: string, resources: Resource[]) {
-  // Check if user is authenticated (look for Supabase auth token)
   const isAuthenticated = typeof window !== 'undefined' && 
     localStorage.getItem('sb-fhihhvyfluopxcuezqhi-auth-token');
   
-  // Create session ID
-  // Guests: Predictable key (progress saved but overwrites on replay)
-  // Auth'd: Unique timestamp (allows multiple playthroughs to be saved)
   const sessionId = isAuthenticated 
     ? `${adventureSlug}-${Date.now()}` 
     : `guest-${adventureSlug}`;
   
   $sessionId.set(sessionId);
   
-  // Build initial state
   const initialState: EngineState = {
     _currentTurn: 1,
     _sessionStart: Date.now()
   };
   
-  // Add all resources at their initial values
   resources.forEach(resource => {
     initialState[resource.id] = resource.initial;
   });
   
-  // Apply to store
   $engineState.set(initialState);
-  
-  // Clear fired rules
   $firedRules.set(new Set());
-  
-  // Initialize turn history with turn 1
   $turnHistory.set([{
     turn: 1,
     snapshot: { ...initialState },
     timestamp: Date.now()
   }]);
-  
-  // Clear any active surge
   $activeSurge.set(null);
 }
 
-/**
- * Update a resource value directly (no clamping)
- * 
- * @param id - Resource identifier
- * @param value - New value to set
- */
 export function setResource(id: string, value: number) {
   const current = $engineState.get();
   $engineState.set({ ...current, [id]: value });
 }
 
-/**
- * Modify a resource by a delta amount with automatic clamping
- * 
- * This is the function you'll use most often. It handles:
- * - Adding/subtracting values (+10 HP, -5 damage)
- * - Clamping to valid range (0 to max)
- * - Smooth updates that trigger reactive components
- * 
- * @param id - Resource identifier
- * @param delta - Amount to add (positive) or subtract (negative)
- * @param max - Maximum allowed value (for clamping)
- */
 export function modifyResource(id: string, delta: number, max: number) {
   const current = $engineState.get();
   const currentValue = current[id] || 0;
@@ -206,24 +119,10 @@ export function modifyResource(id: string, delta: number, max: number) {
   $engineState.set({ ...current, [id]: newValue });
 }
 
-/**
- * Reset a specific resource to its initial value
- * 
- * @param id - Resource identifier
- * @param initialValue - The starting value to reset to
- */
 export function resetResource(id: string, initialValue: number) {
   setResource(id, initialValue);
 }
 
-/**
- * Advance to the next turn
- * 
- * This function:
- * 1. Increments the turn counter
- * 2. Saves a snapshot to history (for rewind feature)
- * 3. Can trigger turn-based events (handled by EngineDirector)
- */
 export function advanceTurn() {
   const current = $engineState.get();
   const nextTurn = (current._currentTurn || 1) + 1;
@@ -231,7 +130,6 @@ export function advanceTurn() {
   
   $engineState.set(newState);
   
-  // Save to history
   const history = $turnHistory.get();
   $turnHistory.set([...history, {
     turn: nextTurn,
@@ -240,30 +138,12 @@ export function advanceTurn() {
   }]);
 }
 
-/**
- * Rewind to a previous turn
- * 
- * This is the "undo" feature. Use cases:
- * - Parent made a mistake clicking buttons
- * - Kids want to try a different choice
- * - Teaching moment: "What would have happened if...?"
- * 
- * Implementation notes:
- * - Restores complete state snapshot from that turn
- * - Clears any rules that fired AFTER the target turn
- * - Does NOT clear turn history (you can still see future turns)
- * 
- * @param turnNumber - The turn to rewind to
- */
 export function rewindToTurn(turnNumber: number) {
   const history = $turnHistory.get();
   const targetEntry = history.find(entry => entry.turn === turnNumber);
   
   if (targetEntry) {
-    // Restore state
     $engineState.set({ ...targetEntry.snapshot });
-    
-    // Clear fired rules after the target turn
     const firedRules = $firedRules.get();
     const newFiredRules = new Set(
       Array.from(firedRules).filter(ruleKey => {
@@ -275,14 +155,6 @@ export function rewindToTurn(turnNumber: number) {
   }
 }
 
-/**
- * Mark a rule as fired to prevent duplicate triggers
- * 
- * Rules are tracked by "turn:index" key
- * Example: "3:2" = Turn 3, Rule index 2
- * 
- * @param ruleIndex - The index of the rule in the rules array
- */
 export function markRuleFired(ruleIndex: number) {
   const turn = $currentTurn.get();
   const ruleKey = `${turn}:${ruleIndex}`;
@@ -290,56 +162,53 @@ export function markRuleFired(ruleIndex: number) {
   $firedRules.set(new Set([...fired, ruleKey]));
 }
 
-/**
- * Check if a rule has already been fired
- * 
- * @param ruleIndex - The index of the rule to check
- * @returns true if the rule has fired, false otherwise
- */
 export function hasRuleFired(ruleIndex: number): boolean {
   const turn = $currentTurn.get();
   const ruleKey = `${turn}:${ruleIndex}`;
   return $firedRules.get().has(ruleKey);
 }
 
-/**
- * Initialize combatant queue
- * 
- * Called when adventure loads with combatants defined.
- * Sets up the turn order and marks first combatant as active.
- * 
- * @param combatants - Array of combatant definitions from adventure
- */
-export function initCombatants(combatants: Array<any>) {
-  $combatantQueue.set([...combatants]);
-  // First combatant goes first
-  if (combatants.length > 0) {
-    $currentCombatant.set(combatants[0].id);
+// --- PARTY & COMBAT LOGIC ---
+
+export function setParty(members: Array<{ name: string; avatar: string }>) {
+  const partyWithIds = members.map((m, i) => ({
+    id: `hero_${i}`,
+    name: m.name,
+    avatar: m.avatar,
+    type: 'hero' as const
+  }));
+  $party.set(partyWithIds);
+}
+
+export function startEncounter(cmsCombatants: Array<any>) {
+  const party = $party.get();
+  const enemies = cmsCombatants.filter(c => c.type !== 'hero'); 
+
+  // Combine real kids + CMS enemies
+  let combat_pool = party.length > 0 ? [...party, ...enemies] : [...cmsCombatants];
+
+  // Fisher-Yates Shuffle
+  for (let i = combat_pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [combat_pool[i], combat_pool[j]] = [combat_pool[j], combat_pool[i]];
+  }
+
+  $combatantQueue.set(combat_pool);
+
+  if (combat_pool.length > 0) {
+    $currentCombatant.set(combat_pool[0].id);
   }
 }
 
-/**
- * Reorder combatant queue
- * 
- * Called after drag-and-drop operation.
- * Updates queue to new order without changing active combatant.
- * 
- * @param newOrder - Reordered array of combatants
- */
+export function initCombatants(combatants: Array<any>) {
+  // Legacy support - routes to startEncounter
+  startEncounter(combatants);
+}
+
 export function reorderQueue(newOrder: Array<any>) {
   $combatantQueue.set(newOrder);
 }
 
-/**
- * Move combatant to front (surge event)
- * 
- * Used by surge events with "forceFirst" flag.
- * Programmatically reorders queue to put specific combatant first.
- * 
- * Example: "The goblin surges forward with rage!"
- * 
- * @param combatantId - ID of combatant to move to front
- */
 export function moveCombatantToFront(combatantId: string) {
   const queue = $combatantQueue.get();
   const index = queue.findIndex(c => c.id === combatantId);
@@ -348,44 +217,61 @@ export function moveCombatantToFront(combatantId: string) {
     const newQueue = [combatant, ...queue.slice(0, index), ...queue.slice(index + 1)];
     $combatantQueue.set(newQueue);
     $currentCombatant.set(combatantId);
-    
-    // Auto-expand drawer to show the queue change
     $shouldAutoExpand.set(true);
   }
 }
 
 /**
- * End current combatant's turn, advance to next
- * 
- * Cycles through the queue. When reaching the end, wraps back to first
- * and increments the global turn counter.
- * 
- * This is called by the "End Turn" button in the queue UI.
+ * Cycle the turn: Move the current first player to the end of the queue.
+ * This ensures the "Active" player is always visual slot #1 (Leftmost).
  */
 export function advanceCombatantTurn() {
   const queue = $combatantQueue.get();
-  const current = $currentCombatant.get();
+  if (queue.length === 0) return;
+
+  // 1. Take the first item (Current Active)
+  const [first, ...rest] = queue;
   
-  if (!current || queue.length === 0) return;
+  // 2. Move it to the end
+  const newQueue = [...rest, first];
   
-  const currentIndex = queue.findIndex(c => c.id === current);
-  const nextIndex = (currentIndex + 1) % queue.length;
-  $currentCombatant.set(queue[nextIndex].id);
+  // 3. Update the Queue
+  $combatantQueue.set(newQueue);
   
-  // Also advance global turn if we've cycled back to first combatant
-  if (nextIndex === 0) {
-    advanceTurn();
+  // 4. Update the "Active" pointer to the NEW first person
+  if (newQueue.length > 0) {
+    $currentCombatant.set(newQueue[0].id);
+    
+    // Check if we looped a full round (Original Logic preserved just in case)
+    // In this new model, a "Round" is harder to track perfectly without a separate counter,
+    // but we can increment the round counter every time the original "Hero" hits slot 1 again if needed.
+    // For now, we just increment round every X turns where X is party size.
+    const currentTurn = $engineState.get()._currentTurn || 1;
+    // Simple heuristic: If the new start ID matches the original start ID (complex to track), 
+    // OR just increment round count based on clicks?
+    // Let's keep it simple: We rely on the Director to see "Round X" or we increment purely on count.
+    
+    // OPTIONAL: You can make rounds increment purely on action count
+    // advanceTurn(); 
   }
 }
 
 /**
- * Complete reset of the engine (nuclear option)
- * 
- * Use cases:
- * - Testing/debugging
- * - "Start Over" button
- * - Switching between adventures
+ * Remove a combatant from the queue by ID
+ * Used for "Death" events or "Fleeing" enemies.
  */
+export function removeCombatant(combatantId: string) {
+  const queue = $combatantQueue.get();
+  const currentId = $currentCombatant.get();
+  
+  const newQueue = queue.filter(c => c.id !== combatantId);
+  $combatantQueue.set(newQueue);
+  
+  if (currentId === combatantId && newQueue.length > 0) {
+    advanceCombatantTurn(); 
+  }
+}
+
 export function resetEngine() {
   $engineState.set({});
   $firedRules.set(new Set());

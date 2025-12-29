@@ -1,0 +1,159 @@
+---
+title: siege-of-ironhold
+description: Defend the citadel against the Shadow Legion. Three phases of escalating war.
+duration: '60'
+difficulty: advanced
+resources:
+  # PHASE 1: THE WALLS
+  - id: wall_defenders
+    label: Wall Defenders
+    max: 50
+    initial: 50
+    theme: blue
+    style: bar
+    icon: Users
+  - id: enemy_ladders
+    label: Siege Ladders
+    max: 10
+    initial: 5
+    theme: red
+    style: counter
+    icon: ChevronsUp
+
+  # PHASE 2: THE GATE (Dual Threat)
+  - id: gate_hp
+    label: Iron Gate Strength
+    max: 100
+    initial: 100
+    theme: gold
+    style: bar
+    icon: Shield
+  - id: siege_beast_hp
+    label: Void Breaker Beast
+    max: 80
+    initial: 0  # Starts invisible (Summon Pattern)
+    theme: purple
+    style: bar
+    icon: Skull
+
+  # PHASE 3: REINFORCEMENTS
+  - id: sun_signal
+    label: Solar Flare Charge
+    max: 100
+    initial: 0 # Fill this to win
+    theme: gold
+    style: hidden # Keep suspense or show it for hope
+    icon: Sun
+
+rules:
+  # GAME OVER CONDITIONS
+  - targetId: wall_defenders
+    operator: '<='
+    threshold: 0
+    action: redirect
+    payload: /compendium/game-over?reason=overrun
+  - targetId: gate_hp
+    operator: '<='
+    threshold: 0
+    action: redirect
+    payload: /compendium/game-over?reason=gate-breached
+
+  # VICTORY CONDITION (Phase 3 End)
+  - targetId: sun_signal
+    operator: '>='
+    threshold: 100
+    action: confetti
+    payload: The Solar Knights dive from the clouds! The Shadow Legion scatters!
+
+surges:
+  # TRANSITION TO PHASE 2 (Turn 4)
+  - triggerTurn: 4
+    dialogue: >-
+      A horn blasts! The ladders fall away, but the ground shakes. A massive
+      Void Breaker Beast charges the main gate!
+    forceFirst: true
+    animation: shake
+    modifyResources:
+      - resourceId: siege_beast_hp
+        delta: 80 # Summons the boss
+
+  # TRANSITION TO PHASE 3 (When Beast Dies)
+  - triggerTurn: 8
+    dialogue: >-
+      The Beast falls! But the gate is splintered. The endless horde rushes the
+      breach. Look to the East! The Solar Beacon is charging!
+    animation: flash
+    modifyResources:
+      - resourceId: sun_signal
+        delta: 10
+
+combatants:
+  - id: heroes
+    name: The Defenders
+    avatar: 🛡️
+    type: hero
+  - id: horde
+    name: Shadow Legion
+    avatar: 🌑
+    type: enemy
+  - id: beast
+    name: Void Beast
+    avatar: 🦏
+    type: enemy
+    linkedResource: siege_beast_hp
+turns: []
+---
+
+# Phase 1: The Walls (Turns 1-3)
+
+*The sky is choked with ash. Below the walls, a sea of obsidian armor shifts. Ladders slam against the stone.*
+
+**The Mechanic:**
+* **High Roll (4-6):** Push a ladder down (`Ladders -1`).
+* **Low Roll (1-3):** Defenders are overrun (`Defenders -5`).
+
+### Turn 1
+**Guide:** "They are climbing! Do you focus on the archers or the ladders?"
+
+* **Option A (Archers):** "You rain arrows!" (Roll d6. On 4+: `Ladders -1`. On Fail: `Defenders -5`)
+* **Option B (Strength):** "You push the wood!" (Roll d6. On 4+: `Ladders -2`. On Fail: `Defenders -10`)
+
+---
+
+# Phase 2: The Gate (Turns 4-7)
+
+*Triggers automatically after Turn 3 Surge. The Void Beast appears!*
+
+**The Mechanic (Dual Threat):**
+* **Attack the Beast:** Lowers `siege_beast_hp`.
+* **Repair the Gate:** Increases `gate_hp`.
+* **Warning:** Every turn, manually lower `gate_hp` by 10 (The Beast ramming it).
+
+### Turn 4
+**Guide:** "The Beast is charging the gate! It's made of living rock and shadow."
+
+* **Action:** "I jump on its back!"
+* **Outcome:** Roll d6.
+    * **6:** Critical hit! You sever a nerve! (`Beast HP -20`)
+    * **1-5:** It shakes you off and slams the gate! (`Gate HP -15`)
+
+*(Note to Guide: Remember to manually subtract -10 Gate HP at the end of every turn for the ramming!)*
+
+---
+
+# Phase 3: The Last Stand (Turn 8+)
+
+*The Beast is dead, but the gate is shattered. You are fighting in the courtyard.*
+
+**The Mechanic (Survival):**
+* **Goal:** Fill the `sun_signal` to 100.
+* **Action:** Every successful defense adds `+20` to the Signal.
+* **Risk:** Every failure lowers `Defenders`.
+
+### Turn 8
+**Guide:** "Hold the line! The beacon is lit, we just need to survive until the Knights see it!"
+
+* **Choice:** "Form a shield wall!"
+* **Roll:**
+    * **Success:** "They break against your shields! The light grows brighter!" (`Signal +25`)
+    * **Fail:** "They push you back!" (`Defenders -10`, `Signal +10` - time still passes)

@@ -1,20 +1,13 @@
 /**
- * RESOURCE CARD COMPONENT
- * 
- * Displays a tracked resource (HP, XP, Trust, etc.) with:
- * - Real-time updates (subscribes to nano store)
- * - Smooth animations on value changes
- * - Theme-based coloring
- * - Multiple display styles (bar, counter, hidden)
- * - Lucide icons for visual clarity
- * 
- * This component is 100% reusable across adventures, courses, habit trackers, etc.
+ * RESOURCE CARD (Compact)
+ * * Thinner bars, smaller buttons, less padding.
  */
 
 import { useStore } from '@nanostores/react';
-import { $engineState } from '../store';
+import { $engineState, modifyResource } from '../store';
 import type { LucideIcon } from 'lucide-react';
 import * as Icons from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 import type { Resource } from '../types';
 
 interface ResourceCardProps {
@@ -23,57 +16,70 @@ interface ResourceCardProps {
 
 export default function ResourceCard({ resource }: ResourceCardProps) {
   const state = useStore($engineState);
-  const currentValue = state[resource.id] || resource.initial;
-  const percentage = (currentValue / resource.max) * 100;
   
-  // Get icon component dynamically from Lucide
+  // 1. TRUE HIDING LOGIC
+  // If it's explicitly hidden OR (starts at 0 and hasn't been touched), don't render.
+  const currentValue = state[resource.id] ?? resource.initial;
+  if (resource.style === 'hidden') return null;
+  if (resource.initial === 0 && currentValue === 0) return null;
+
+  const percentage = Math.min(100, Math.max(0, (currentValue / resource.max) * 100));
+  
   const IconComponent = resource.icon ? 
     (Icons[resource.icon as keyof typeof Icons] as LucideIcon) : 
     null;
   
-  // Theme colors for progress bars
-  const themeColors = {
-    red: 'from-red-500 to-red-700',
-    green: 'from-green-500 to-green-700',
-    blue: 'from-blue-500 to-blue-700',
-    gold: 'from-yellow-500 to-yellow-700',
-    purple: 'from-purple-500 to-purple-700'
+  const getBarColor = (theme: string) => {
+    switch (theme) {
+      case 'red': return 'from-red-500 to-red-600';
+      case 'blue': return 'from-blue-500 to-blue-600';
+      case 'gold': return 'from-yellow-500 to-yellow-600';
+      case 'purple': return 'from-purple-500 to-purple-600';
+      default: return 'from-slate-500 to-slate-600';
+    }
   };
-  
-  // Hidden style = tracked but not displayed (used for internal counters)
-  if (resource.style === 'hidden') return null;
-  
-  // Counter style = big number display (good for simple values)
-  if (resource.style === 'counter') {
-    return (
-      <div className="glass-panel p-4 text-center">
-        {IconComponent && <IconComponent className="w-8 h-8 mx-auto mb-2 text-forge-gold" />}
-        <div className="text-4xl font-bold text-white transition-all duration-300">
-          {currentValue}
-        </div>
-        <div className="text-sm text-slate-400 mt-1">{resource.label}</div>
-      </div>
-    );
-  }
-  
-  // Bar style = progress bar display (default, best for ranges)
+
   return (
-    <div className="glass-panel p-3">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          {IconComponent && <IconComponent className="w-5 h-5 text-forge-gold" />}
-          <span className="text-sm font-semibold text-white">{resource.label}</span>
+    <div className="bg-slate-800/50 rounded-lg border border-slate-700/50 p-2 flex items-center gap-3">
+      {/* Label Area */}
+      <div className="w-16 shrink-0 leading-none">
+        <div className="text-[10px] font-bold text-slate-400 uppercase truncate mb-1">
+          {resource.label}
         </div>
-        <span className="text-xs text-slate-400">
+        <div className="text-xs text-slate-500 font-mono">
           {currentValue}/{resource.max}
-        </span>
+        </div>
       </div>
-      
-      <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
-        <div 
-          className={`h-full bg-gradient-to-r ${themeColors[resource.theme]} transition-all duration-500 ease-out`}
-          style={{ width: `${percentage}%` }}
-        />
+
+      {/* Controls Area (Button - Bar - Button) */}
+      <div className="flex-1 flex items-center gap-2">
+        <button
+          onClick={() => modifyResource(resource.id, -1, resource.max)}
+          className="w-8 h-8 rounded bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center active:scale-95 touch-manipulation"
+        >
+          <Minus className="w-4 h-4" />
+        </button>
+
+        <div className="flex-1 h-8 bg-slate-900 rounded relative overflow-hidden border border-slate-700/50 flex items-center justify-center">
+          <div 
+            className={`absolute left-0 top-0 bottom-0 bg-gradient-to-r ${getBarColor(resource.theme)} opacity-20`} 
+            style={{ width: `${percentage}%` }}
+          />
+          <div 
+            className={`absolute left-0 bottom-0 h-0.5 bg-gradient-to-r ${getBarColor(resource.theme)} transition-all duration-300`} 
+            style={{ width: `${percentage}%` }}
+          />
+          <span className="relative z-10 text-sm font-bold text-white">
+            {currentValue}
+          </span>
+        </div>
+
+        <button
+          onClick={() => modifyResource(resource.id, 1, resource.max)}
+          className="w-8 h-8 rounded bg-green-500/10 border border-green-500/20 text-green-400 flex items-center justify-center active:scale-95 touch-manipulation"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
